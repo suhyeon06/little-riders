@@ -3,6 +3,8 @@ package kr.co.littleriders.backend.domain.routeinfo.service;
 
 import kr.co.littleriders.backend.domain.routeinfo.ChildBoardDropInfoService;
 import kr.co.littleriders.backend.domain.routeinfo.entity.ChildBoardDropInfo;
+import kr.co.littleriders.backend.domain.routeinfo.error.code.ChildBoardDropInfoErrorCode;
+import kr.co.littleriders.backend.domain.routeinfo.error.exception.ChildBoardDropInfoException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -17,7 +19,7 @@ class ChildBoardDropInfoServiceServiceImpl implements ChildBoardDropInfoService 
     @Override
     public ChildBoardDropInfo findById(Long id) {
         return childBoardDropInfoRepository.findById(id).orElseThrow(
-                RuntimeException::new //TODO: Exception 변경
+                () -> ChildBoardDropInfoException.from(ChildBoardDropInfoErrorCode.NOT_FOUND)
         );
     }
 

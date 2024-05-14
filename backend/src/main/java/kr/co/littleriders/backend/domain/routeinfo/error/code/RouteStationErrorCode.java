@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum RouteStationErrorCode implements LittleRidersErrorCode {
 
 
-    NOT_FOUND(HttpStatus.NOT_FOUND, "001", "뭘 넣어야 할까요;;;"); //TODO : 진짜 뭐넣지
+    NOT_FOUND(HttpStatus.NOT_FOUND, "001", "해당 경로의 정류장을 찾을 수 없습니다.");
 
 
     RouteStationErrorCode(HttpStatus status, String code, String message) {

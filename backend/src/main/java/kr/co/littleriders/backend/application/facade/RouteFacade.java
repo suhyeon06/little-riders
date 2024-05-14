@@ -17,7 +17,7 @@ public interface RouteFacade {
 
     List<RouteResponse> getAllRoute(long academyId);
 
-    RouteDetailResponse getRoute(long academyId, long RouteId);
+    RouteDetailResponse getRoute(long academyId, long routeId);
 
     void updateRoute(long academyId, long routeId, RouteRequest routeRequest);
 

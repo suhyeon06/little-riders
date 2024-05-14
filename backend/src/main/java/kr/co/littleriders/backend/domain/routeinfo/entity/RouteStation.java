@@ -74,10 +74,5 @@ public class RouteStation {
         this.visitOrder = newOrder;
     }
 
-//    @OneToMany(mappedBy = "boardRouteStation")
-//    private List<ChildBoardDropInfo> childBoardInfoList;
-//
-//    @OneToMany(mappedBy = "dropRouteStation")
-//    private List<ChildBoardDropInfo> childDropInfoList;
 
 }

@@ -7,7 +7,7 @@ import org.springframework.http.HttpStatus;
 public enum ChildBoardDropInfoErrorCode implements LittleRidersErrorCode {
 
 
-    NOT_FOUND(HttpStatus.NOT_FOUND, "001", "뭘 넣어야 할까요;;;"); //TODO : 진짜 뭐넣지
+    NOT_FOUND(HttpStatus.NOT_FOUND, "001", "원생의 승차/하차 정류장 정보를 찾을 수 없습니다.");
 
 
     ChildBoardDropInfoErrorCode(HttpStatus status, String code, String message) {
