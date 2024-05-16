@@ -29,9 +29,6 @@ public class AcademyTeacherResponse {
     }
 
     public static AcademyTeacherResponse from(Teacher teacher) {
-
-        // String imagePath = "/api/academy/teacher/" + teacher.getId() + "/image";
-
         return new AcademyTeacherResponse(teacher.getId(),
                                           teacher.getName(),
                                           teacher.getPhoneNumber(),

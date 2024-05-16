@@ -50,13 +50,12 @@ class AcademyDriverFacadeImpl implements AcademyDriverFacade {
 	public List<AcademyDriverResponse> readDriverList(Long academyId) {
 
 		Academy academy = academyService.findById(academyId);
-		List<AcademyDriverResponse> driverList = driverService.findByAcademy(academy)
-															  .stream()
-															  .sorted(Comparator.comparing(driver -> driver.getStatus() == DriverStatus.WORK ? 0 : 1))
-															  .map(AcademyDriverResponse::from)
-															  .collect(Collectors.toList());
+		return driverService.findByAcademy(academy)
+							.stream()
+							.sorted(Comparator.comparing(driver -> driver.getStatus() == DriverStatus.WORK ? 0 : 1))
+							.map(AcademyDriverResponse::from)
+							.collect(Collectors.toList());
 
-		return driverList;
 	}
 
 }

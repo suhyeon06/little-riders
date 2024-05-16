@@ -41,9 +41,9 @@ public class AcademyChildFacadeImpl implements AcademyChildFacade {
         Academy academy = academyService.findById(academyId);
         return academy.getAcademyChildList()
                 .stream()
-                .sorted(Comparator.comparing(academyChild -> {
-                    return academyChild.getStatus() == AcademyChildStatus.ATTENDING ? 0 : 1;
-                }))
+                .sorted(Comparator.comparing(academyChild ->
+                    academyChild.getStatus() == AcademyChildStatus.ATTENDING ? 0 : 1
+                ))
                 .map(AcademyChildResponse::from)
                 .collect(Collectors.toList());
     }
@@ -57,9 +57,7 @@ public class AcademyChildFacadeImpl implements AcademyChildFacade {
            throw AcademyChildException.from(AcademyChildErrorCode.ILLEGAL_ACCESS);
        }
 
-       AcademyChildDetailResponse childDetail = AcademyChildDetailResponse.from(academyChild);
-
-        return childDetail;
+       return AcademyChildDetailResponse.from(academyChild);
     }
 
     @Override
@@ -90,12 +88,10 @@ public class AcademyChildFacadeImpl implements AcademyChildFacade {
     public List<BeaconResponse> getBeaconList(Long academyId) {
 
         Academy academy = academyService.findById(academyId);
-        List<BeaconResponse> beaconList = beaconServcie.findByAcademy(academy).stream()
-                                                       .filter(beacon -> beacon.getAcademyChild() == null)
-                                                       .map(BeaconResponse::from)
-                                                       .collect(Collectors.toList());
-
-        return beaconList;
+        return beaconServcie.findByAcademy(academy).stream()
+                                                   .filter(beacon -> beacon.getAcademyChild() == null)
+                                                   .map(BeaconResponse::from)
+                                                   .collect(Collectors.toList());
     }
 
     @Override

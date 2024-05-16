@@ -1,5 +1,6 @@
 package kr.co.littleriders.backend.global.utils;
 
+import java.awt.*;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.nio.file.Files;
@@ -25,7 +26,7 @@ import kr.co.littleriders.backend.global.error.exception.ImageException;
 public class ImageUtil {
 	private final String BASE_PATH;
 	// TODO-이윤지-default image 설정 필요
-	private final String defaultImage = "default.jpg";
+	private static final String defaultImage = "default.jpg";
 
 	public ImageUtil(@Value("${spring.resource.directory}") String basePath) {
 		BASE_PATH = basePath;
@@ -37,21 +38,18 @@ public class ImageUtil {
 			return defaultImage;
 		}
 
-		// 확장자 valid 검사
-		String originName = file.getOriginalFilename(); //원본 이미지 이름
-		String ext = getExtension(StringUtils.getFilenameExtension(originName)); //확장자
+		String originName = file.getOriginalFilename();
+		String ext = getExtension(StringUtils.getFilenameExtension(originName));
 		String generatedName = UUID.randomUUID() + ext;
 
-		//multipartFile -> 받아서 rename 해주고
-		byte[] bytes = new byte[0];
 		try {
+			byte[] bytes = new byte[0];
 			bytes = file.getBytes();
 			Path path = Paths.get(BASE_PATH, generatedName);
 			Files.write(path, bytes);
 
-			// return path.toString();
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw ImageException.from(ImageErrorCode.FILE_NOT_READABLE);
 		}
 
 		return generatedName;
@@ -77,8 +75,7 @@ public class ImageUtil {
 		}
 
 		switch (extension.toLowerCase()) {
-			case "jpeg":
-			case "jpg":
+			case "jpeg", "jpg":
 				return MediaType.IMAGE_JPEG;
 			case "png":
 				return MediaType.IMAGE_PNG;
@@ -106,7 +103,7 @@ public class ImageUtil {
 
 	public Map<String, Object> getImageByUUID(String uuid) {
 
-		String imagePath = BASE_PATH + "/" + uuid;
-		return getImage(imagePath);
+		Path imagePath = Paths.get(BASE_PATH, uuid);
+		return getImage(imagePath.toString());
 	}
 }

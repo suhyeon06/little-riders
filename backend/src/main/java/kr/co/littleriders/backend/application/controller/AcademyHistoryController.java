@@ -50,8 +50,7 @@ public class AcademyHistoryController {
 	public ResponseEntity<ShuttleDetailHistoryResponse> getShuttleDetailHistory(@Auth AuthAcademy authAcademy,
 																				@PathVariable(value = "historyId") String historyId) {
 
-		Long academyId = authAcademy.getId();
-		ShuttleDetailHistoryResponse shuttleDetailHistory = histroyFacade.readShuttleDetailHistory(academyId, historyId);
+		ShuttleDetailHistoryResponse shuttleDetailHistory = histroyFacade.readShuttleDetailHistory(historyId);
 
 		return ResponseEntity.ok().body(shuttleDetailHistory);
 	}

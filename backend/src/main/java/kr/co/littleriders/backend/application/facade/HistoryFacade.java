@@ -13,5 +13,5 @@ public interface HistoryFacade {
 
 	List<ShuttleDailyHistoryResponse> readShuttleDailyHistory(Long academyId, Long shuttleId, LocalDate date);
 
-	ShuttleDetailHistoryResponse readShuttleDetailHistory(Long academyId, String historyId);
+	ShuttleDetailHistoryResponse readShuttleDetailHistory(String historyId);
 }

@@ -37,9 +37,6 @@ public class AcademyShuttleResponse {
     }
 
     public static AcademyShuttleResponse from(Shuttle shuttle) {
-
-        // String imagePath = "/api/academy/shuttle/" + shuttle.getId() + "/image";
-
         return new AcademyShuttleResponse(shuttle.getId(),
                                           shuttle.getName(),
                                           shuttle.getLicenseNumber(),

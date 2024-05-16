@@ -19,8 +19,6 @@ public class ContentFacadeImpl implements ContentFacade {
 	@Override
 	public Map<String, Object> readImage(String uuid) {
 
-		Map<String, Object> result = imageUtil.getImageByUUID(uuid);
-
-		return result;
+		return imageUtil.getImageByUUID(uuid);
 	}
 }

@@ -44,6 +44,7 @@ class AcademyTeacherFacadeImpl implements AcademyTeacherFacade {
 			String imagePath = imageUtil.saveImage(image);
 			teacher.setImagePath(imagePath);
 		}
+
 		return teacherService.save(teacher);
 	}
 
@@ -51,13 +52,12 @@ class AcademyTeacherFacadeImpl implements AcademyTeacherFacade {
 	public List<AcademyTeacherResponse> readTeacherList(Long academyId) {
 
 		Academy academy = academyService.findById(academyId);
-		List<AcademyTeacherResponse> teacherList = teacherService.findByAcademy(academy)
-			.stream()
-			.sorted(Comparator.comparing(teacher -> teacher.getStatus() == TeacherStatus.WORK ? 0 : 1))
-			.map(AcademyTeacherResponse::from)
-			.collect(Collectors.toList());
+		return teacherService.findByAcademy(academy)
+							.stream()
+							.sorted(Comparator.comparing(teacher -> teacher.getStatus() == TeacherStatus.WORK ? 0 : 1))
+							.map(AcademyTeacherResponse::from)
+							.collect(Collectors.toList());
 
-		return teacherList;
 	}
 
 }

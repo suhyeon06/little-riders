@@ -6,7 +6,7 @@ public enum ImageErrorCode implements LittleRidersErrorCode {
 
 	NOT_FOUND(HttpStatus.NOT_FOUND, "001", "파일을 찾을 수 없습니다."),
 	ILLEGAL_EXTENSION(HttpStatus.BAD_REQUEST, "002", "지원하는 확장자가 아닙니다."),
-	FILE_NOT_READABLE(HttpStatus.INTERNAL_SERVER_ERROR, "003", "파일을 읽을 수 없습니다.");
+	FILE_NOT_READABLE(HttpStatus.INTERNAL_SERVER_ERROR, "003", "파일을 읽는 중 오류가 발생했습니다.");
 
 	ImageErrorCode (HttpStatus status, String code, String message) {
 		this.status = status;
