@@ -10,3 +10,7 @@ export interface TeacherCardType {
   imagePath: string
   status: string
 }
+
+export interface TeacherDetailInfo extends TeacherCardType {
+  uuid: string
+}

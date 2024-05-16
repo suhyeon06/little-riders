@@ -11,6 +11,10 @@ export interface DriverCardType {
   status: string
 }
 
+export interface DriverDetailInfo extends DriverCardType {
+  uuid: string
+}
+
 export interface SSE_DriverInfo {
   name: string
   image: string

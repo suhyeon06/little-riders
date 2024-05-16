@@ -9,3 +9,11 @@ export const getTeacherList = async () => {
 
   return response
 }
+
+export const getTeacher = async (teacherId: number) => {
+  const response = await axiosInstance.get(
+    `${API.BASE_URL}/${API.GET_TEACHER_LIST}/${teacherId}`,
+  )
+
+  return response
+}

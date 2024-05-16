@@ -1,7 +1,16 @@
 import { useRef, useState } from 'react'
 
-import COLOR_PALETTE from '@style/ColorPalette'
-import { LocationInfo } from '@types'
+import { useRealTimeStore } from '@stores/realTimeStore'
+
+import { showSuccessAlert } from '@utils/alertUtils'
+
+import {
+  AcademyShuttle,
+  BoardInfo,
+  DropInfo,
+  InitDataLocationInfo,
+  LocationInfo,
+} from '@types'
 
 const DEFAULT_OPTIONS = {
   zoom: 18,
@@ -11,11 +20,12 @@ const DEFAULT_OPTIONS = {
 }
 
 export const useSetRealTimeMap = () => {
-  const [realTimeMap, setRealTimeMap] = useState<naver.maps.Map>()
+  const [realTimeMap, setRealTimeMap] = useState<naver.maps.Map>(undefined!)
   const [realTimeMarker, setRealTimeMarker] = useState<naver.maps.Marker>()
-  const [polyline, setPolyline] = useState<naver.maps.Polyline>()
-  const [polylineList, setPolylineList] = useState<naver.maps.Polyline[]>([])
+  const polyline = useRef<naver.maps.Polyline>()
   const latLngList = useRef<naver.maps.LatLng[]>([])
+
+  const realTimeInfo = useRealTimeStore((state) => state.realTimeInfo)
 
   /**
    * 맵 초기화 하는 함수
@@ -38,8 +48,8 @@ export const useSetRealTimeMap = () => {
    * @returns 방위각
    */
   const setDirection = (
-    prevLocationInfo: LocationInfo,
-    curLocationInfo: LocationInfo,
+    prevLocationInfo: LocationInfo | InitDataLocationInfo,
+    curLocationInfo: LocationInfo | InitDataLocationInfo,
   ) => {
     const { latitude: lat1, longitude: lon1 } = prevLocationInfo
     const { latitude: lat2, longitude: lon2 } = curLocationInfo
@@ -57,7 +67,7 @@ export const useSetRealTimeMap = () => {
     }
 
     if (realTimeMarker) {
-      const content = `<div id="marker" style="transform:translate(-25px, -25px);width:50px;height:50px"><img src="/bus.svg" style="width:50px; height:50px; transform:rotate(${rotateDegree + 90}deg);" /></div>`
+      const content = `<div class="marker" style="transform:translate(-25px, -25px);width:50px;height:50px"><img src="/bus.svg" style="width:50px; height:50px; transform:rotate(${rotateDegree + 90}deg);" /></div>`
       realTimeMarker.setIcon({
         content,
       })
@@ -68,10 +78,16 @@ export const useSetRealTimeMap = () => {
    * 현재 위치에 기반해서 실시간으로 마커를 찍는 함수
    *
    * @param curLocationInfo 현재 위치 정보
+   * @param shuttleInfo 셔틀 정보
+   * @param map 현재 생성된 맵 객체
    */
-  const drawRealTimeMarker = (curLocationInfo: LocationInfo) => {
+  const drawRealTimeMarker = (
+    curLocationInfo: LocationInfo | InitDataLocationInfo,
+    shuttleInfo: AcademyShuttle,
+    map: naver.maps.Map,
+  ) => {
     if (!realTimeMap) {
-      return
+      setRealTimeMap(map)
     }
 
     if (realTimeMarker) {
@@ -89,10 +105,31 @@ export const useSetRealTimeMap = () => {
 
       const marker = new naver.maps.Marker({
         position,
-        map: realTimeMap,
+        map,
         icon: {
-          content: `<div id="marker" style="transform:translate(-25px, -25px);width:50px;height:50px"><img src="/bus.svg" style="width:50px; height:50px;" /></div>`,
+          content: `<div class="marker" style="transform:translate(-25px, -25px);width:50px;height:50px"><img src="/bus.svg" style="width:50px; height:50px;" /></div>`,
         },
+      })
+
+      const content = `<div classname='p-4 rounded-md'>${shuttleInfo.name}</div>`
+      const infoWindow = new naver.maps.InfoWindow({
+        content,
+        maxWidth: 140,
+        backgroundColor: 'white',
+        borderColor: '#111111',
+        borderWidth: 1,
+        anchorSize: new naver.maps.Size(5, 5),
+        anchorSkew: true,
+        anchorColor: '#EEEEEE',
+        pixelOffset: new naver.maps.Point(10, -5),
+      })
+
+      naver.maps.Event.addListener(marker, 'mouseover', () => {
+        infoWindow.open(map, marker)
+      })
+
+      naver.maps.Event.addListener(marker, 'mouseout', () => {
+        infoWindow.close()
       })
 
       setRealTimeMarker(marker)
@@ -100,52 +137,17 @@ export const useSetRealTimeMap = () => {
   }
 
   /**
-   * 전의 위치와 현재 위치를 기반으로 두 위치를 잇는 polyline을 그리는 함수
-   *
-   * @param prevLocationInfo 전의 위치 정보
-   * @param curLocationInfo 현재 위치 정보
-   */
-  const drawPolyline = (
-    prevLocationInfo: LocationInfo,
-    curLocationInfo: LocationInfo,
-  ) => {
-    if (!realTimeMap) {
-      return
-    }
-
-    const path = [
-      new naver.maps.LatLng(
-        prevLocationInfo.latitude,
-        prevLocationInfo.longitude,
-      ),
-      new naver.maps.LatLng(
-        curLocationInfo.latitude,
-        curLocationInfo.longitude,
-      ),
-    ]
-
-    const newPolyLine = new naver.maps.Polyline({
-      path: path,
-      strokeColor: COLOR_PALETTE.darkgreen,
-      strokeWeight: 10,
-      strokeOpacity: 0.7,
-      strokeLineCap: 'round',
-    })
-
-    newPolyLine.setMap(realTimeMap)
-
-    setPolyline(newPolyLine)
-    setPolylineList((prev) => [...prev, newPolyLine])
-  }
-
-  /**
    * LatLng 리스트에 있는 LatLng으로 한번에 Polyline을 그리는 함수
    *
-   * @param curLocationInfo
+   * @param curLocationInfo 현재 위치 정보
+   * @param map 현재 생성된 맵 객체
    */
-  const drawPolylineWithList = (curLocationInfo: LocationInfo) => {
+  const drawPolylineWithList = (
+    curLocationInfo: LocationInfo | InitDataLocationInfo,
+    map: naver.maps.Map,
+  ) => {
     if (!realTimeMap) {
-      return
+      setRealTimeMap(map)
     }
 
     const curLatLng = new naver.maps.LatLng(
@@ -155,53 +157,120 @@ export const useSetRealTimeMap = () => {
 
     if (polyline) {
       latLngList.current.push(curLatLng)
-      polyline.getPath().push(curLatLng)
-    } else {
-      const polyline = new naver.maps.Polyline({
-        map: realTimeMap,
-        path: latLngList.current,
-        clickable: true,
-        strokeColor: '#5347AA',
-        strokeOpacity: 0.5,
-        strokeWeight: 5,
-        strokeLineCap: 'round',
+      polyline.current?.getPath().push(curLatLng)
+    }
+  }
+
+  /**
+   * polyline 객체를 초기화 하는 함수
+   */
+  const initPolyline = (map: naver.maps.Map) => {
+    const newPolyline = new naver.maps.Polyline({
+      map,
+      path: [],
+      strokeColor: `#${(Math.random() * 0xfffff * 1000000).toString(16).slice(0, 6)}`,
+      strokeOpacity: 0.5,
+      strokeWeight: 5,
+      strokeLineCap: 'round',
+    })
+    polyline.current = newPolyline
+  }
+
+  const drawBoardMarker = (boardInfo: BoardInfo, map: naver.maps.Map) => {
+    const { latitude, longitude } = boardInfo
+
+    const position = new naver.maps.LatLng(latitude, longitude)
+
+    const BOARD_MARKER_OPTIONS: naver.maps.MarkerOptions = {
+      map,
+      position,
+      zIndex: 50,
+      icon: {
+        content: '<img class="w-12 h-12" src="/child-icon.svg" />',
+        anchor: new naver.maps.Point(15, 15),
+      },
+    }
+    const boardMarker = new naver.maps.Marker(BOARD_MARKER_OPTIONS)
+    boardMarker.addListener('click', () => {
+      const key = `${latitude}-${longitude}`
+      const content = realTimeInfo[key].map((info) => {
+        return `<div class='w-full p-4 flex border-b-2 justify-between'>
+          <img src='/api/content/${info.child.imagePath}' class='w-1/3 aspect-square object-cover'/>
+          <div class='flex flex-col justify-between'>
+            <div class='flex items-center gap-2'>
+              <p class='text-4xl'>${info.child.name}</p>
+              <img src="${info.child.gender === 'MALE' ? '/son.svg' : '/daughter.svg'}" class='w-8'/>
+            </div>
+            <p>${new Date(info.time).toLocaleTimeString()}</p>
+            <p class="text-xl${info.status === 'BOARD' ? ' text-darkgreen">승차' : ' text-red-700">하차'}</p>
+          </div>
+        </div>`
       })
-      setPolyline(polyline)
-    }
+
+      showSuccessAlert({
+        html: content.join(''),
+        icon: undefined,
+        allowOutsideClick: true,
+        backdrop: false,
+        width: 400,
+      })
+    })
+
+    return boardMarker
   }
 
-  /**
-   * Polyline을 보이게 하는 함수
-   */
-  const showPolyline = () => {
-    if (!realTimeMap) {
-      return
+  const drawDropMarker = (dropInfo: DropInfo, map: naver.maps.Map) => {
+    const { latitude, longitude } = dropInfo
+
+    const position = new naver.maps.LatLng(latitude, longitude)
+
+    const DROP_MARKER_OPTIONS: naver.maps.MarkerOptions = {
+      map,
+      position,
+      zIndex: 50,
+      icon: {
+        content: '<img class="w-12 h-12" src="/child-icon.svg" />',
+        anchor: new naver.maps.Point(15, 15),
+      },
     }
+    const dropMarker = new naver.maps.Marker(DROP_MARKER_OPTIONS)
+    dropMarker.addListener('click', () => {
+      const key = `${latitude}-${longitude}`
+      const content = realTimeInfo[key].map((info) => {
+        return `<div class='w-full p-4 flex border-b-2 justify-between'>
+          <img src='/api/content/${info.child.imagePath}' class='w-1/3 aspect-square object-cover'/>
+          <div class='flex flex-col justify-between'>
+            <div class='flex items-center gap-2'>
+              <p class='text-4xl'>${info.child.name}</p>
+              <img src="${info.child.gender === 'MALE' ? '/son.svg' : '/daughter.svg'}" class='w-8'/>
+            </div>
+            <p>${new Date(info.time).toLocaleTimeString()}</p>
+            <p class="text-xl${info.status === 'BOARD' ? ' text-darkgreen">승차' : ' text-red">하차'}</p>
+          </div>
+        </div>`
+      })
 
-    polylineList.forEach((polyline) => {
-      polyline.setMap(realTimeMap)
+      showSuccessAlert({
+        html: content.join(''),
+        icon: undefined,
+        allowOutsideClick: true,
+        backdrop: false,
+        width: 400,
+      })
     })
-    polyline?.setMap(realTimeMap)
-  }
 
-  /**
-   * Polyline을 숨기는 함수
-   */
-  const hidePolyline = () => {
-    polylineList.forEach((polyline) => {
-      polyline.setMap(null)
-    })
-    polyline?.setMap(null)
+    return dropMarker
   }
 
   return {
     realTimeMap,
+    polyline,
     drawRealTimeMarker,
-    drawPolyline,
     initRealTimeMap,
-    hidePolyline,
-    showPolyline,
     drawPolylineWithList,
     setDirection,
+    initPolyline,
+    drawBoardMarker,
+    drawDropMarker,
   }
 }

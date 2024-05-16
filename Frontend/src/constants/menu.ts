@@ -15,10 +15,6 @@ export const MENU_LIST = [
     text: '운영 관리',
     path: 'manage/operate',
   },
-  {
-    text: '마이 페이지',
-    path: 'mypage',
-  },
 ] as const
 
 export type MenuText = (typeof MENU_LIST)[number]['text']

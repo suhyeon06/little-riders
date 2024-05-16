@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 
 import RealTimeMap from '@components/Main/RealTimeMap'
 import ShuttleInfo from '@components/Main/ShuttleInfo'
@@ -9,18 +9,14 @@ import { useFetchShuttleList } from '@hooks/shuttle'
 import { AcademyShuttle } from '@types'
 
 export default function MainPage() {
-  const [selectedShuttle, setSelectedShuttle] = useState<AcademyShuttle>(null!)
+  const [selectedShuttle, setSelectedShuttle] = useState<AcademyShuttle | null>(
+    null,
+  )
   const { shuttleList, isLoading } = useFetchShuttleList()
 
-  const handleShuttleButtonClick = (shuttle: AcademyShuttle) => {
+  const handleShuttleButtonClick = (shuttle: AcademyShuttle | null) => {
     setSelectedShuttle(shuttle)
   }
-
-  useEffect(() => {
-    if (!isLoading && shuttleList) {
-      setSelectedShuttle(shuttleList[0])
-    }
-  }, [isLoading, shuttleList])
 
   if (isLoading) {
     return <div>Loading...</div>
@@ -31,10 +27,10 @@ export default function MainPage() {
       <Spacing style="h-[120px]" />
 
       <div className="flex h-[calc(100%-120px)] w-full border-b-2">
-        {<ShuttleInfo selectedShuttle={selectedShuttle} />}
+        {selectedShuttle && <ShuttleInfo selectedShuttle={selectedShuttle} />}
 
         <RealTimeMap
-          shuttleList={shuttleList}
+          shuttleList={shuttleList || []}
           selectedShuttle={selectedShuttle}
           onSelect={handleShuttleButtonClick}
         />
