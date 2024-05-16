@@ -94,6 +94,7 @@ export default function SortableContainer({
                 <SortableItem
                   key={item.academyChildId}
                   id={item.academyChildId}
+                  gender={item.gender}
                   name={item.name}
                   type={id}
                   index={index}

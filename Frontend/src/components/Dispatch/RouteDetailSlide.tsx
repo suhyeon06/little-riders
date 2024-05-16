@@ -75,8 +75,14 @@ export default function RouteDetailSlide({
   const { modifyRouteChild } = usePostRouteChild()
   const { mutateAsync: asyncModifyRouteStation } = usePostRouteStation()
 
-  const { drawRoute, initPolyLine, drawRouteMarkers, deleteMarkers, moveMap } =
-    MapHook(mapRef)
+  const {
+    drawRoute,
+    initPolyLine,
+    drawRouteMarkers,
+    deleteMarkers,
+    moveMap,
+    deletePolyLines,
+  } = MapHook(mapRef)
   const sensors = useSensors(
     useSensor(MouseSensor, {
       activationConstraint: {
@@ -169,6 +175,8 @@ export default function RouteDetailSlide({
 
   const handleCancelClick = () => {
     setSelectedRouteId(-1)
+    deleteMarkers(markerList, setMarkerList)
+    deletePolyLines()
     setTimeout(function () {
       window.dispatchEvent(new Event('resize'))
     }, 550)
@@ -181,20 +189,18 @@ export default function RouteDetailSlide({
       )
       if (temp) {
         setChildDragDisabled(false)
-        if (!temp.academyChildList) {
-          setChildItems((prev) => {
-            if (!temp.academyChildList) {
-              return {
-                ...prev,
-                selectedChildList: [],
-              }
-            }
+        setChildItems((prev) => {
+          if (!temp.academyChildList) {
             return {
               ...prev,
-              selectedChildList: [...temp.academyChildList],
+              selectedChildList: [],
             }
-          })
-        }
+          }
+          return {
+            ...prev,
+            selectedChildList: [...temp.academyChildList],
+          }
+        })
       } else {
         setChildDragDisabled(true)
         setChildItems((prev) => ({
@@ -204,7 +210,7 @@ export default function RouteDetailSlide({
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [selectedStation])
+  }, [selectedStation, stationItems['selectedStationList']])
   /**
    * st      ationList, routeList 가 변경되었을 때 stationItems(모아둔 꾸러미) 내부 변경
    */

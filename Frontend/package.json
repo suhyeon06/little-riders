@@ -26,6 +26,7 @@
     "event-source-polyfill": "^1.0.31",
     "http-proxy-middleware": "^3.0.0",
     "localforage": "^1.10.0",
+    "lottie-react": "^2.4.0",
     "lucide-react": "^0.376.0",
     "match-sorter": "^6.3.4",
     "qrcode.react": "^3.1.0",

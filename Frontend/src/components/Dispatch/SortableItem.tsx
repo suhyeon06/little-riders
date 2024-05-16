@@ -12,6 +12,7 @@ interface Props {
   selectedStation?: number
   name: string
   type?: string
+  gender?: string
   index: number
   childList?: ChildInfo[]
   onClick?: (id: number) => void
@@ -26,6 +27,7 @@ export default function SortableItem({
   id,
   selectedStation,
   name,
+  gender,
   type,
   index,
   childList,
@@ -52,7 +54,12 @@ export default function SortableItem({
       return <p className="w-8 text-center text-xl font-bold">{index}</p>
     if (type === 'stationList')
       return <img src="/bus-stop-icon.svg" className="w-8" />
-    if (type.includes('academyChildList')) return <></>
+    if (type.includes('academyChildList'))
+      return gender === 'FEMALE' ? (
+        <img src="/daughter.svg" className="w-8" />
+      ) : (
+        <img src="/son.svg" className="w-8" />
+      )
   }
 
   const stationTailIcon = (type: string | undefined) => {

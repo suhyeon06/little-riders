@@ -129,7 +129,9 @@ export function MapHook(
    * draw polylines to represent the route
    */
   const drawPolyLines = (newPathList: naver.maps.LatLng[]) => {
-    if (polyline) polyline.setPath(newPathList)
+    if (polyline) {
+      polyline.setPath(newPathList)
+    }
   }
 
   // TODO 학원 좌표 arg로 받아야함
@@ -187,7 +189,9 @@ export function MapHook(
     drawPolyLines(newPathList)
   }
 
-  // const drawCircleList = () => {}
+  const deletePolyLines = () => {
+    polyline?.setMap(null)
+  }
 
   const moveMap = (latLng: naver.maps.LatLng) => {
     mapRef!.current?.setCenter(latLng)
@@ -203,6 +207,7 @@ export function MapHook(
     drawPolyLines,
     drawRoute,
     drawRouteMarkers,
+    deletePolyLines,
     moveMap,
   }
 }

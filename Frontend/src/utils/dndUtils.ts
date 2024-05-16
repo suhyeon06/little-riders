@@ -98,6 +98,18 @@ export const handleStationDragOver = (
     return
   }
 
+  const stationItem = stationItems['selectedStationList'].find(
+    (station: Station) => {
+      return station.id === Number(id.toString())
+    },
+  )
+  if (
+    stationItem?.academyChildList &&
+    stationItem.academyChildList.length > 0
+  ) {
+    return
+  }
+
   setStationItems((prev) => {
     const activeItems = prev[activeContainer]
     const overItems = prev[overContainer]
@@ -161,8 +173,17 @@ export const handleStationDragEnd = (
 
   const activeContainer = findStationContainer(id, stationItems)
   const overContainer = findStationContainer(overId, stationItems)
-
   if (!activeContainer || !overContainer || activeContainer !== overContainer) {
+    return
+  }
+
+  const stationItem = stationItems['stationList'].find((station: Station) => {
+    return station.id === Number(id.toString())
+  })
+  if (
+    stationItem?.academyChildList &&
+    stationItem.academyChildList.length > 0
+  ) {
     return
   }
 
@@ -172,7 +193,6 @@ export const handleStationDragEnd = (
   const overIndex = stationItems[activeContainer].findIndex(
     (item) => item.id === overId,
   )
-
   if (activeIndex !== overIndex) {
     setStationItems((items) => ({
       ...items,
@@ -182,7 +202,7 @@ export const handleStationDragEnd = (
 }
 
 /**********************************************
- 여기 부터 CHILD로 똑같은 함수 반복
+  여기 부터 CHILD로 똑같은 함수 반복
 ******************************************** */
 /*
  * 지금 집고 있는 아이템이 어느 컨테이너에 있는지 확인하는 함수
