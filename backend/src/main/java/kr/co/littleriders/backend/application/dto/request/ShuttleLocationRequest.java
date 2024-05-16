@@ -17,9 +17,4 @@ public class ShuttleLocationRequest {
         return ShuttleLocation.of(shuttleId, this.latitude, this.longitude, this.speed);
     }
 
-    //주석처리 - 김도현
-//    public ShuttleLocationHistory toShuttleLocationHistory(long shuttleId) {
-//        return ShuttleLocationHistory.of(shuttleId, this.latitude, this.longitude, this.speed);
-//    }
-
 }

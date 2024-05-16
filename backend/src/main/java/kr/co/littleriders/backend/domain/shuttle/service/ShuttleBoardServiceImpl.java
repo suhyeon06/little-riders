@@ -33,8 +33,8 @@ class ShuttleBoardServiceImpl implements ShuttleBoardService {
     @Override
     @Transactional
     public void deleteAllByShuttleId(long shuttleId) {
-        List<ShuttleBoard> ShuttleBoardList = shuttleBoardRepository.findByShuttleId(shuttleId);
-        shuttleBoardRepository.deleteAll(ShuttleBoardList);
+        List<ShuttleBoard> shuttleBoardList = shuttleBoardRepository.findByShuttleId(shuttleId);
+        shuttleBoardRepository.deleteAll(shuttleBoardList);
     }
 
     @Override
