@@ -10,8 +10,8 @@ export const useAddNewDevice = () => {
   const changeModalState = modalStore((state) => state.changeModalState)
   const queryClient = useQueryClient()
   const { mutate: addNewDevice, ...rest } = useMutation({
-    mutationFn: ({ serialNumber }: Device) => {
-      return postNewDevice({ serialNumber })
+    mutationFn: ({ terminalNumber }: Device) => {
+      return postNewDevice({ terminalNumber })
     },
 
     onSuccess: async () => {

@@ -46,3 +46,32 @@ export const useFetchRealTimeShuttleInfo = (shuttleId: number) => {
     }
   }, [queryClient, shuttleId])
 }
+
+export const useFetchParentRealTimeShuttleInfo = (shuttleId: number) => {
+  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    // SSE URL
+    const eventSourceUrl = `/api/family/shuttle/1/location`
+
+    // Create Event Source
+    const eventSource = new EventSource(eventSourceUrl, {
+      withCredentials: true,
+    })
+
+    // Recieve Message
+    const handleMessage = (event: MessageEvent) => {
+      const newData = JSON.parse(event.data)
+      queryClient.setQueryData(['realTimeShuttleInfo', shuttleId], newData)
+    }
+
+    // Add Receiving Message Event Handler
+    eventSource.addEventListener('location', handleMessage)
+
+    // Close Event Source When Unmount Component
+    return () => {
+      eventSource.removeEventListener('location', handleMessage)
+      eventSource.close()
+    }
+  }, [queryClient, shuttleId])
+}

@@ -23,7 +23,21 @@ export default function ShuttleList({ show }: Props) {
   const openAddShuttleModal = () => {
     changeModalState('addShuttleModal')
   }
+  // const [imageSrcs, setImageSrc] = useState<string[]>([])
   const { shuttleList, isLoading } = useFetchShuttleList()
+
+  // useEffect(() => {
+  //   if (shuttleList) {
+  //     Promise.allSettled(
+  //       shuttleList.map((shuttle) => {
+  //         return getResourceAuth(shuttle.imagePath)
+  //       }),
+  //     ).then((results)=>{
+  //       const temp = []
+  //       results.forEach((result,num)=>)
+  //     })
+  //   }
+  // }, [shuttleList])
 
   if (isLoading)
     return (

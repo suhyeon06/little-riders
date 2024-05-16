@@ -35,7 +35,11 @@ export default function ChildCard({ childInfo }: Props) {
         onClick={handleDetailShow}
       >
         {/* 사진 */}
-        <img src={imagePath} alt="" className="h-2/3 w-full object-contain" />
+        <img
+          src={`/api/content/${imagePath}`}
+          alt=""
+          className="h-2/3 w-full object-contain"
+        />
         {/* 정보 */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center justify-between">

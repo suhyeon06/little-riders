@@ -14,9 +14,10 @@ type Props = {
 }
 
 export default function AddTerminalModal({ modalSwitch, modalTitle }: Props) {
-  const { state: serialNumber, onChange: handleChangeSerialNumber } = useInput({
-    data: '',
-  })
+  const { state: terminalNumber, onChange: handleChangeSerialNumber } =
+    useInput({
+      data: '',
+    })
 
   const { addNewDevice } = useAddNewDevice()
   return (
@@ -31,7 +32,7 @@ export default function AddTerminalModal({ modalSwitch, modalTitle }: Props) {
       <Button
         full
         onClick={() => {
-          addNewDevice({ serialNumber })
+          addNewDevice({ terminalNumber })
         }}
         color="bg-lightgreen"
       >

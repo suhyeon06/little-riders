@@ -10,3 +10,14 @@ export const getSignOut = async () => {
 
   return response
 }
+
+/**
+ * 리소스 조회 권한 검사 API 요청 함수
+ *
+ * @param uuid 리소스 UUID
+ */
+export const getResourceAuth = async (uuid: string) => {
+  const response = await axiosInstance.get(`/content/${uuid}`)
+
+  return response
+}

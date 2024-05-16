@@ -107,7 +107,9 @@ export function useRedrawPolyLine({ naverMap, data }: UseRedrawPolyLineProps) {
         return new naver.maps.LatLng(location.latitude, location.longitude)
       }),
       strokeColor: COLOR_PALETTE['lightgreen'],
-      strokeWeight: 5,
+      strokeWeight: 10,
+      strokeOpacity: 0.7,
+      strokeLineCap: 'round',
     })
     setPolyLines(polyline)
   }, [data, naverMap])

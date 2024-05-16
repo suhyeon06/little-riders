@@ -20,7 +20,7 @@ export default function DriverCard({ data }: Props) {
       <div>
         <img
           className="h-[150px] w-[150px] rounded-md border-2 border-slate-300 "
-          src={data.imagePath}
+          src={`/api/content/${data.imagePath}`}
           onError={addDefaultImage}
           alt="기본 이미지"
         ></img>

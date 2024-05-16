@@ -48,7 +48,7 @@ export default function DriveHistoryPage() {
   const { driveDetailInfoByHistory, isLoading: detailLoading } =
     useFetchDriveDetailInfoByHistory(historyId, driveInfoByDayList)
 
-  if (isError)
+  if (driveHistoryList?.length === 0 || isError)
     return (
       <div className=" flex h-[100vh] w-[100vw] flex-col items-center justify-center bg-lightgreen text-white">
         <strong className="text-2xl">차량의 운행 기록이 없습니다!</strong>
