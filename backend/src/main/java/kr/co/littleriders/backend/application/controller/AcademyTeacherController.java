@@ -1,11 +1,9 @@
 package kr.co.littleriders.backend.application.controller;
 
 import kr.co.littleriders.backend.application.dto.response.AcademyTeacherResponse;
+import kr.co.littleriders.backend.application.dto.response.TeacherDetailResponse;
 import kr.co.littleriders.backend.global.auth.annotation.Auth;
 import kr.co.littleriders.backend.global.auth.dto.AuthAcademy;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +13,6 @@ import kr.co.littleriders.backend.application.facade.AcademyTeacherFacade;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/academy/teacher")
@@ -43,6 +40,16 @@ public class AcademyTeacherController {
 		List<AcademyTeacherResponse> teacherList = academyTeacherFacade.readTeacherList(academyId);
 
 		return ResponseEntity.ok().body(teacherList);
+	}
+
+	@GetMapping("/{teacherId}")
+	public ResponseEntity<TeacherDetailResponse> getTeacherDetail(@Auth AuthAcademy authAcademy,
+																@PathVariable(value = "teacherId") Long teacherId) {
+
+		Long academyId = authAcademy.getId();
+		TeacherDetailResponse teacherDetail = academyTeacherFacade.readTeacherDetail(academyId, teacherId);
+
+		return ResponseEntity.ok().body(teacherDetail);
 	}
 
 }

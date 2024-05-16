@@ -2,13 +2,9 @@ package kr.co.littleriders.backend.application.facade.impl;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import kr.co.littleriders.backend.application.dto.response.AcademyShuttleResponse;
-import kr.co.littleriders.backend.domain.shuttle.error.code.ShuttleErrorCode;
-import kr.co.littleriders.backend.domain.shuttle.error.exception.ShuttleException;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;

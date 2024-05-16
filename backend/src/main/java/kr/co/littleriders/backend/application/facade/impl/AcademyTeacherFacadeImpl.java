@@ -2,15 +2,14 @@ package kr.co.littleriders.backend.application.facade.impl;
 
 import java.util.Comparator;
 import java.util.List;
-import java.util.Map;
 import java.util.stream.Collectors;
 
 import kr.co.littleriders.backend.application.dto.response.AcademyTeacherResponse;
+import kr.co.littleriders.backend.application.dto.response.TeacherDetailResponse;
 import kr.co.littleriders.backend.domain.teacher.entity.TeacherStatus;
 import kr.co.littleriders.backend.domain.teacher.error.code.TeacherErrorCode;
 import kr.co.littleriders.backend.domain.teacher.error.exception.TeacherException;
 import kr.co.littleriders.backend.global.utils.ImageUtil;
-import org.springframework.core.io.Resource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
@@ -58,6 +57,18 @@ class AcademyTeacherFacadeImpl implements AcademyTeacherFacade {
 							.map(AcademyTeacherResponse::from)
 							.collect(Collectors.toList());
 
+	}
+
+	@Override
+	public TeacherDetailResponse readTeacherDetail(Long academyId, Long teacherId) {
+
+		Academy academy = academyService.findById(academyId);
+		Teacher teacher = teacherService.findById(teacherId);
+		if (!teacher.equalsAcademy(academy)) {
+			throw TeacherException.from(TeacherErrorCode.ILLEGAL_ACCESS);
+		}
+
+		return TeacherDetailResponse.from(teacher);
 	}
 
 }

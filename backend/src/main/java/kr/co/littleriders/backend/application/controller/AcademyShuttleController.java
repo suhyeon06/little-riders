@@ -3,9 +3,6 @@ package kr.co.littleriders.backend.application.controller;
 import kr.co.littleriders.backend.application.dto.response.AcademyShuttleResponse;
 import kr.co.littleriders.backend.global.auth.annotation.Auth;
 import kr.co.littleriders.backend.global.auth.dto.AuthAcademy;
-import org.springframework.core.io.Resource;
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -15,7 +12,6 @@ import kr.co.littleriders.backend.application.facade.AcademyShuttleFacade;
 import lombok.RequiredArgsConstructor;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/academy/shuttle")

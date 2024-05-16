@@ -2,10 +2,9 @@ package kr.co.littleriders.backend.application.facade;
 
 import kr.co.littleriders.backend.application.dto.request.TeacherRegistRequest;
 import kr.co.littleriders.backend.application.dto.response.AcademyTeacherResponse;
-import org.springframework.core.io.Resource;
+import kr.co.littleriders.backend.application.dto.response.TeacherDetailResponse;
 
 import java.util.List;
-import java.util.Map;
 
 public interface AcademyTeacherFacade {
 
@@ -13,4 +12,5 @@ public interface AcademyTeacherFacade {
 
 	List<AcademyTeacherResponse> readTeacherList(Long academyId);
 
+	TeacherDetailResponse readTeacherDetail(Long academyId, Long teacherId);
 }
