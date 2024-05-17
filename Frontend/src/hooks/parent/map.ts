@@ -6,6 +6,7 @@ import { DriveLocation } from '@types'
 type UseRedrawPolyLineProps = {
   naverMap: naver.maps.Map | undefined
   data: DriveLocation[]
+  isLocation: boolean
 }
 
 /**
@@ -34,21 +35,44 @@ export function useSetParentMap(isLoading: boolean, isError: boolean) {
 export function useRedrawPolyLineParentMap({
   naverMap,
   data,
+  isLocation,
 }: UseRedrawPolyLineProps) {
-  const [polyLines, setPolyLines] = useState<naver.maps.Polyline>()
   const [realTimeMarker, setRealTimeMarker] = useState<naver.maps.Marker>()
   useEffect(() => {
-    polyLines?.setMap(null)
     if (data.length === 0) return
-    for (let i = 0; i < data.length - 1; i++) {
-      let color: string = 'lightgreen'
-      const location = data[i]
+    if (!isLocation)
+      for (let i = 0; i < data.length - 1; i++) {
+        let color: string = 'lightgreen'
+        const location = data[i]
 
+        if (location.speed >= 50) color = 'red'
+        else if (location.speed >= 40) color = 'orange'
+        else if (location.speed >= 30) color = 'yellow'
+
+        new naver.maps.Polyline({
+          map: naverMap,
+          // path: data.map((location) => {
+          //   return new naver.maps.LatLng(location.latitude, location.longitude)
+          // }),
+          path: [
+            new naver.maps.LatLng(data[i].latitude, data[i].longitude),
+            new naver.maps.LatLng(data[i + 1].latitude, data[i + 1].longitude),
+          ],
+          strokeColor: COLOR_PALETTE[color],
+          strokeWeight: 5,
+          strokeOpacity: 1,
+          strokeLineCap: 'round',
+        })
+      }
+    else if (data.length >= 2) {
+      let color: string = 'lightgreen'
+      const i = data.length - 2
+      const location = data[i]
       if (location.speed >= 50) color = 'red'
       else if (location.speed >= 40) color = 'orange'
       else if (location.speed >= 30) color = 'yellow'
 
-      const polyline = new naver.maps.Polyline({
+      new naver.maps.Polyline({
         map: naverMap,
         // path: data.map((location) => {
         //   return new naver.maps.LatLng(location.latitude, location.longitude)
@@ -62,7 +86,6 @@ export function useRedrawPolyLineParentMap({
         strokeOpacity: 1,
         strokeLineCap: 'round',
       })
-      setPolyLines(polyline)
     }
     // 중심 좌표 이동
     const recentLocation = data[data.length - 1]
@@ -83,7 +106,7 @@ export function useRedrawPolyLineParentMap({
       position: location,
       map: naverMap,
       icon: {
-        content: `<div id="marker" style="transform:translate(-25px, -25px);width:50px;height:50px"><img src="/src/assets/image/bus.svg" style="width:30px; height:30px;" /></div>`,
+        content: `<div id="marker" style="transform:translate(-25px, -25px);width:50px;height:50px"><img src="/bus.svg" style="width:30px; height:30px;" /></div>`,
       },
     })
 

@@ -1,10 +1,9 @@
-import { useState } from 'react'
+import { useCallback, useState } from 'react'
 
 import DriverSmallCard from '@components/Academy/DriverSmallCard'
 import TeacherSmallCard from '@components/Academy/TeacherSmallCard'
 import BottomSheet from '@components/Shared/BottomSheet'
-import Button from '@components/Shared/Button'
-import Loading from '@components/Shared/Loading'
+import LoadingAnimation from '@components/Shared/LoadingAnimation'
 
 import {
   useDrawChildMarkerParentMap,
@@ -13,10 +12,10 @@ import {
 } from '@hooks/parent/map'
 import useRealTimeParentSSE from '@hooks/parent/useRealTimeParentSSE'
 
-import DriveStatus from './DriveStatus'
+import ParentNaverMap from './ParentNaverMap'
+import ParentViewHeader from './ParentViewHeader'
 import './ParentViewPage.css'
-
-import { MdAutorenew } from 'react-icons/md'
+import ShowDetailButton from './ShowDetailButton'
 
 interface Props {
   uuid: string | undefined
@@ -32,6 +31,7 @@ export default function RealTimeParentView({ uuid }: Props) {
     driveStatus,
     boardChild,
     dropChild,
+    isLocation,
   } = useRealTimeParentSSE({ uuid })
   // 맵 초기 설정
   const { naverMap: parentMap } = useSetParentMap(isLoading, isError)
@@ -39,6 +39,7 @@ export default function RealTimeParentView({ uuid }: Props) {
   useRedrawPolyLineParentMap({
     naverMap: parentMap,
     data: driveLocationInfo,
+    isLocation,
   })
   // 승하차 마커 찍기
   useDrawChildMarkerParentMap({
@@ -47,17 +48,17 @@ export default function RealTimeParentView({ uuid }: Props) {
     naverMap: parentMap,
   })
   // bottomSheet
-  const [bottomsheetState, setBottomSheetState] = useState(true)
-  const changeBottomSheetState = () => {
+  const [bottomsheetState, setBottomSheetState] = useState(false)
+  const changeBottomSheetState = useCallback(() => {
     setBottomSheetState(!bottomsheetState)
-  }
-  const renewPage = () => {
+  }, [bottomsheetState])
+  const renewPage = useCallback(() => {
     window.location.reload()
-  }
+  }, [])
   if (isLoading)
     return (
       <div className=" relative mx-auto my-0 flex h-[100dvh] min-w-[360px] max-w-[768px] touch-none flex-col items-center justify-center bg-white">
-        <Loading />
+        <LoadingAnimation />
       </div>
     )
   if (isError)
@@ -70,19 +71,8 @@ export default function RealTimeParentView({ uuid }: Props) {
   return (
     <div className=" relative mx-auto my-0 flex h-[100dvh] min-w-[360px] max-w-[768px] touch-none flex-col items-center bg-white">
       {/* 카카오맵 위치는 여기 */}
-      <div id="parentMap" className="h-full w-full "></div>
-      <header className=" absolute mt-[4%] flex h-[6%] w-[95%] items-center justify-center rounded-md border-[2px] border-lightgreen bg-white  text-lg  text-black">
-        <span className="font-bold">운행 현황</span>
-        <div
-          onClick={renewPage}
-          className="absolute right-[0%] top-[150%] z-50 rounded-lg bg-lightgreen p-2 text-white"
-        >
-          <MdAutorenew />
-        </div>
-        <div className="absolute left-[3%] flex items-center text-sm text-black">
-          <DriveStatus driveStatus={driveStatus} />
-        </div>
-      </header>
+      <ParentNaverMap />
+      <ParentViewHeader renewPage={renewPage} driveStatus={driveStatus} />
       {bottomsheetState === true ? (
         <>
           <BottomSheet
@@ -90,19 +80,13 @@ export default function RealTimeParentView({ uuid }: Props) {
             visibleHandler={changeBottomSheetState}
           >
             <div className="mx-[3%] mb-[5%] flex w-[100%] justify-around">
-              <DriverSmallCard data={teacherInfo} />
-              <TeacherSmallCard data={driverInfo} />
+              <DriverSmallCard data={driverInfo} />
+              <TeacherSmallCard data={teacherInfo} />
             </div>
           </BottomSheet>
         </>
       ) : (
-        <div className="absolute bottom-2 w-[90%] animate-bounce">
-          <Button color="bg-lightgreen" full onClick={changeBottomSheetState}>
-            <span className="text-xm font-bold text-white">
-              탑승 인원 정보 보기
-            </span>
-          </Button>
-        </div>
+        <ShowDetailButton changeBottomSheetState={changeBottomSheetState} />
       )}
     </div>
   )

@@ -1,5 +1,7 @@
 import { memo } from 'react'
 
+import { formatStringToPhoneNumber } from '@utils/formatUtils'
+
 import { SSE_DriverInfo } from '@types'
 import { IoCallSharp } from 'react-icons/io5'
 
@@ -18,7 +20,9 @@ export default memo(function TeacherSmallCard({ data }: Props) {
       {/* 직원 정보 */}
       <div className=" ml-[3%] flex flex-col items-center">
         <strong className="text-[80%]">{data.name} 선생님</strong>
-        <span className="text-[70%] text-darkgray">{`${data.phoneNumber.substring(0, 2)}-${data.phoneNumber.substring(3, 6)}-${data.phoneNumber.substring(7, 10)}`}</span>
+        <span className="text-[70%] text-darkgray">
+          {formatStringToPhoneNumber(data.phoneNumber)}
+        </span>
       </div>
       <a
         href={`tel:${data.phoneNumber}`}
