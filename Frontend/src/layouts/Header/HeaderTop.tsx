@@ -31,8 +31,12 @@ export default function HeaderTop() {
   return (
     <div className="flex h-1/2 items-center justify-between">
       {/* Logo */}
-      <div className="flex h-9 w-44 items-center justify-center bg-lightgray">
-        Logo
+      <div className="flex h-9 w-48 items-center gap-2">
+        <img src="/bus.svg" alt="" className="w-1/4" />
+        <p className="text-2xl font-bold">
+          <span className="text-yellow">리틀 </span>
+          <span>라이더즈</span>
+        </p>
       </div>
 
       <div className="flex items-center gap-10">

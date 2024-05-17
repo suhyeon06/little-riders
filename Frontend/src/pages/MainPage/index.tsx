@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 import RealTimeMap from '@components/Main/RealTimeMap'
 import ShuttleInfo from '@components/Main/ShuttleInfo'
+import LoadingAnimation from '@components/Shared/LoadingAnimation'
 import Spacing from '@components/Shared/Spacing'
 
 import { useFetchShuttleList } from '@hooks/shuttle'
@@ -19,7 +20,7 @@ export default function MainPage() {
   }
 
   if (isLoading) {
-    return <div>Loading...</div>
+    return <LoadingAnimation />
   }
 
   return (

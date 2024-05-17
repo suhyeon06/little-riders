@@ -31,7 +31,6 @@ export default function ChildDetailModal({
 
   useModal()
 
-  // TODO: 로딩 컴포넌트 추가 필요
   if (isLoading) {
     return null
   }
