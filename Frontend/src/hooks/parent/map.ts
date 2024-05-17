@@ -40,17 +40,30 @@ export function useRedrawPolyLineParentMap({
   useEffect(() => {
     polyLines?.setMap(null)
     if (data.length === 0) return
-    const polyline = new naver.maps.Polyline({
-      map: naverMap,
-      path: data.map((location) => {
-        return new naver.maps.LatLng(location.latitude, location.longitude)
-      }),
-      strokeColor: COLOR_PALETTE['lightgreen'],
-      strokeWeight: 5,
-      strokeOpacity: 0.7,
-      strokeLineCap: 'round',
-    })
-    setPolyLines(polyline)
+    for (let i = 0; i < data.length - 1; i++) {
+      let color: string = 'lightgreen'
+      const location = data[i]
+
+      if (location.speed >= 50) color = 'red'
+      else if (location.speed >= 40) color = 'orange'
+      else if (location.speed >= 30) color = 'yellow'
+
+      const polyline = new naver.maps.Polyline({
+        map: naverMap,
+        // path: data.map((location) => {
+        //   return new naver.maps.LatLng(location.latitude, location.longitude)
+        // }),
+        path: [
+          new naver.maps.LatLng(data[i].latitude, data[i].longitude),
+          new naver.maps.LatLng(data[i + 1].latitude, data[i + 1].longitude),
+        ],
+        strokeColor: COLOR_PALETTE[color],
+        strokeWeight: 5,
+        strokeOpacity: 1,
+        strokeLineCap: 'round',
+      })
+      setPolyLines(polyline)
+    }
     // 중심 좌표 이동
     const recentLocation = data[data.length - 1]
     const newCenter = new window.naver.maps.LatLng(
@@ -58,38 +71,25 @@ export function useRedrawPolyLineParentMap({
       recentLocation.longitude,
     )
     naverMap?.setCenter(newCenter)
-    // 마커 찍기
-    if (realTimeMarker) {
-      realTimeMarker.setPosition(
-        new naver.maps.LatLng(
-          recentLocation.latitude,
-          recentLocation.longitude,
-        ),
-      )
-      naverMap?.setCenter(
-        new naver.maps.LatLng(
-          recentLocation.latitude,
-          recentLocation.longitude,
-        ),
-      )
-    } else {
-      const location = new naver.maps.LatLng(
-        recentLocation.latitude,
-        recentLocation.longitude,
-      )
 
-      const marker = new naver.maps.Marker({
-        position: location,
-        map: naverMap,
-        icon: {
-          content: `<div id="marker" style="transform:translate(-25px, -25px);width:50px;height:50px"><img src="/src/assets/image/bus.svg" style="width:30px; height:30px;" /></div>`,
-        },
-      })
+    realTimeMarker?.setMap(null)
 
-      naverMap?.setCenter(location)
+    const location = new naver.maps.LatLng(
+      recentLocation.latitude,
+      recentLocation.longitude,
+    )
 
-      setRealTimeMarker(marker)
-    }
+    const marker = new naver.maps.Marker({
+      position: location,
+      map: naverMap,
+      icon: {
+        content: `<div id="marker" style="transform:translate(-25px, -25px);width:50px;height:50px"><img src="/src/assets/image/bus.svg" style="width:30px; height:30px;" /></div>`,
+      },
+    })
+
+    naverMap?.setCenter(location)
+
+    setRealTimeMarker(marker)
   }, [data, naverMap])
 }
 
@@ -115,7 +115,7 @@ export function useDrawChildMarkerParentMap({
         content: `
         <div id="childMarker" style="width:50px;height:50px display:flex; flex-direction:column">
         <span style="padding:3px;color:white;background-color:blue;font-size:12px;font-weight:bold;border-radius:5px">승차</span>
-        <img src="/api/content/${boardChild.child.imagePath}" style="width:30px; height:30px;border:2px solid blue;border-radius:30px" /></div>
+        <img src="/api/content/${boardChild.child.image}" style="width:30px; height:30px;border:2px solid blue;border-radius:30px" /></div>
         `,
         anchor: new naver.maps.Point(12, 40),
       },
@@ -139,8 +139,8 @@ export function useDrawChildMarkerParentMap({
       map: naverMap,
       icon: {
         content: `<div id="childMarker" style="width:50px;height:50px display:flex; flex-direction:column">
-        <span style="padding:3px;color:white;background-color:red;font-size:12px;font-weight:bold;border-radius:5px">승차</span>
-        <img src="/api/content/${dropChild.child.imagePath}" style="width:30px; height:30px;border:2px solid blue;border-radius:30px" /></div>
+        <span style="padding:3px;color:white;background-color:red;font-size:12px;font-weight:bold;border-radius:5px">하차</span>
+        <img src="/api/content/${dropChild.child.image}" style="width:30px; height:30px;border:2px solid blue;border-radius:30px" /></div>
         `,
       },
     })

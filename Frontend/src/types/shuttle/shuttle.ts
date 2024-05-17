@@ -1,5 +1,7 @@
 export interface DriveHistoryType {
-  time: string
+  year: string
+  month: string
+  day: string
 }
 
 export interface DriveInfoByDay {
@@ -22,4 +24,10 @@ export type AcademyShuttle = {
   imagePath: string
   terminalNumber: string
   status: ShuttleStatus
+}
+
+export type LocationInfo = {
+  latitude: number
+  longitude: number
+  speed: number
 }

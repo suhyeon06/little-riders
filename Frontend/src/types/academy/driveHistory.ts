@@ -40,4 +40,5 @@ export interface DriveLocation {
   latitude: number
   longitude: number
   time: string
+  speed: number
 }

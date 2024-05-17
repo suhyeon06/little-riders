@@ -1,10 +1,19 @@
 interface Props {
-  time: string
+  year: string
+  month: string
+  day: string
   onClick: (id: number) => void
   id: number
   dateId: number
 }
-export default function DriveHistory({ time, onClick, id, dateId }: Props) {
+export default function DriveHistory({
+  year,
+  month,
+  day,
+  onClick,
+  id,
+  dateId,
+}: Props) {
   let className =
     'flex h-12 w-full cursor-pointer items-center justify-center border-x-2 border-b-2 font-semibold'
   if (dateId === id)
@@ -17,7 +26,7 @@ export default function DriveHistory({ time, onClick, id, dateId }: Props) {
           onClick(id)
         }}
       >
-        {time}
+        {`${year}-${month}-${day}`}
       </button>
     </li>
   )

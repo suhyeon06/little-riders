@@ -1,8 +1,4 @@
-import {
-  useRedrawMarkers,
-  useRedrawPolyLine,
-  useSetMap,
-} from '@hooks/shuttle/driveHistoryMap'
+import { useRedrawPolyLine, useSetMap } from '@hooks/shuttle/driveHistoryMap'
 
 import { RouteLogDropDown } from './RouteLogDropDown'
 
@@ -32,10 +28,10 @@ export default function DriveHistoryNaverMap({
     data: driveDetailInfoByHistory?.locationList as DriveLocation[],
   })
   // // Map에 마커 찍기
-  useRedrawMarkers({
-    naverMap,
-    data: driveDetailInfoByHistory?.locationList as DriveLocation[],
-  })
+  // useRedrawMarkers({
+  //   naverMap,
+  //   data: driveDetailInfoByHistory?.locationList as DriveLocation[],
+  // })
   // useRedrawStudentMarkers({ naverMap, data: data[type] })
   // // Map에 선 그리기
   useRedrawPolyLine({

@@ -18,8 +18,10 @@ export default function DriveHistoryList({
       {driveHistoryList?.map((history, i) => {
         return (
           <DriveHistory
-            key={history.time}
-            time={history.time}
+            key={history.day}
+            month={history.month}
+            year={history.year}
+            day={history.day}
             onClick={onClickChangeDateId}
             id={i}
             dateId={dateId}

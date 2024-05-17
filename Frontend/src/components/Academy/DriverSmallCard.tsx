@@ -11,7 +11,7 @@ export default memo(function DriverSmallCard({ data }: Props) {
     <div className="border-ligtgray relative flex h-[100%] w-[43%]  flex-col items-center justify-center rounded-xl  border-[1px] border-lightgray p-[2%] ">
       {/* 직원 사진 */}
       <img
-        src={`api/content/${data.image}`}
+        src={`/api/content/${data.image}`}
         alt=""
         className="h-[25%] w-[25%] rounded-full"
       />

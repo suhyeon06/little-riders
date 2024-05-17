@@ -1,4 +1,4 @@
-const COLOR_PALETTE = {
+const COLOR_PALETTE: { [key: string]: string } = {
   darkgreen: '#007F73',
   lightgreen: '#4CCD99',
   yellow: '#FFC700',
@@ -7,6 +7,7 @@ const COLOR_PALETTE = {
   darkgray: '#6E6E6E',
   red: '#F24E1E',
   pink: '#D53F8C',
+  orange: '#F7934F',
 }
 export type ColorPalette = keyof typeof COLOR_PALETTE
 

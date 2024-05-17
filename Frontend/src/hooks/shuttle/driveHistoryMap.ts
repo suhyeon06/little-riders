@@ -17,7 +17,7 @@ export function useSetMap({ data }: UseSetMapProps) {
   const options = {
     // center: new naver.maps.LatLng(37.359924641705476, 127.1148204803467),
     center: new naver.maps.LatLng(avgLat, avgLng),
-    zoom: 13,
+    zoom: 18,
     minZoom: 7,
     zoomControl: true,
     disableKineticPOan: false,
@@ -101,17 +101,31 @@ export function useRedrawPolyLine({ naverMap, data }: UseRedrawPolyLineProps) {
   const [polyLines, setPolyLines] = useState<naver.maps.Polyline>()
   useEffect(() => {
     polyLines?.setMap(null)
-    const polyline = new naver.maps.Polyline({
-      map: naverMap,
-      path: data.map((location) => {
-        return new naver.maps.LatLng(location.latitude, location.longitude)
-      }),
-      strokeColor: COLOR_PALETTE['lightgreen'],
-      strokeWeight: 10,
-      strokeOpacity: 0.7,
-      strokeLineCap: 'round',
-    })
-    setPolyLines(polyline)
+
+    for (let i = 0; i < data.length - 1; i++) {
+      let color: string = 'lightgreen'
+      const location = data[i]
+
+      if (location.speed >= 50) color = 'red'
+      else if (location.speed >= 40) color = 'orange'
+      else if (location.speed >= 30) color = 'yellow'
+
+      const polyline = new naver.maps.Polyline({
+        map: naverMap,
+        // path: data.map((location) => {
+        //   return new naver.maps.LatLng(location.latitude, location.longitude)
+        // }),
+        path: [
+          new naver.maps.LatLng(data[i].latitude, data[i].longitude),
+          new naver.maps.LatLng(data[i + 1].latitude, data[i + 1].longitude),
+        ],
+        strokeColor: COLOR_PALETTE[color],
+        strokeWeight: 5,
+        strokeOpacity: 1,
+        strokeLineCap: 'round',
+      })
+      setPolyLines(polyline)
+    }
   }, [data, naverMap])
 }
 /**
