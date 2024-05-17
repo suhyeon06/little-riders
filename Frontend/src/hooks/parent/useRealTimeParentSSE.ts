@@ -22,7 +22,7 @@ export default function useRealTimeParentSSE({ uuid }: Props) {
     image: '',
     phoneNumber: '',
   })
-  const [isLocation, setIsLocation] = useState(false)
+  const [isInit, setIsInit] = useState(true)
   // const [shuttleInfo, setShuttleInfo] = useState({
   //   name: '',
   //   type: '',
@@ -49,7 +49,6 @@ export default function useRealTimeParentSSE({ uuid }: Props) {
       setTeacherInfo(data.teacher)
       setDriverInfo(data.driver)
       setIsLoading(false)
-      setIsLocation(true)
     }
     const locationEvent = async (event: MessageEvent) => {
       const data = await JSON.parse(event.data)
@@ -57,6 +56,7 @@ export default function useRealTimeParentSSE({ uuid }: Props) {
         return [...prev, data]
       })
       if (driveStatus !== 'driving') setDriveStatus('driving')
+      if (isInit) setIsInit(false)
     }
 
     const boardEvent = async (event: MessageEvent) => {
@@ -79,7 +79,6 @@ export default function useRealTimeParentSSE({ uuid }: Props) {
       setDropChild(data.drop)
       setDriveLocationInfo(data.locationList)
       setIsLoading(false)
-      setIsLocation(false)
       setDriveStatus('end')
       eventSource.close()
     }
@@ -124,7 +123,7 @@ export default function useRealTimeParentSSE({ uuid }: Props) {
     teacherInfo,
     driverInfo,
     // shuttleInfo,
-    isLocation,
+    isInit,
     driveStatus,
     boardChild,
     dropChild,

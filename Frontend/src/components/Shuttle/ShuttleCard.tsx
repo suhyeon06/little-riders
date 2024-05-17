@@ -33,13 +33,16 @@ export default function ShuttleCard({ data }: Props) {
         <Button
           color="bg-white border-[1px] border-lightgreen"
           onClick={() => {}}
+          full
         >
-          <span className="text-xs font-bold text-lightgreen">단말기 등록</span>
+          <span className=" text-xs font-bold text-lightgreen">
+            단말기 등록
+          </span>
         </Button>
       ) : (
         <span className=" text-xs text-white">S10J12Ap312</span>
       )}
-      <div className="flex items-center pt-2">
+      <div className="flex items-center justify-between pt-2">
         <div className="flex flex-col">
           <strong className="text-xs">{data.type}</strong>
           <span className="text-xs text-darkgray">{data.licenseNumber}</span>

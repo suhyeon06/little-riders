@@ -22,7 +22,7 @@ export default memo(function BottomSheet({
   return (
     <>
       <div
-        className=" absolute z-50 flex w-full flex-col items-center justify-center rounded-t-lg border-t-2 border-lightgreen bg-white"
+        className="absolute z-50 flex w-full flex-col items-center justify-center rounded-t-lg border-t-2  bg-white shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
         ref={sheet}
       >
         <span className="absolute top-[-13%] text-[12px] font-bold text-black">

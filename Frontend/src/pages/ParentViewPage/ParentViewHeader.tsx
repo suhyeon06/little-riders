@@ -14,11 +14,11 @@ export default memo(function ParentViewHeader({
   driveStatus,
 }: Props) {
   return (
-    <header className=" absolute mt-[4%] flex h-[6%] w-[95%] items-center justify-center rounded-md border-[2px] border-lightgreen bg-white  text-lg  text-black">
+    <header className="absolute mt-[4%] flex h-[6%] w-[95%] items-center justify-center rounded-md border-[1px] border-lightgreen bg-white text-lg  text-black  shadow-[1.0px_2.0px_2.0px_rgba(0,0,0,0.38)]">
       <span className="font-bold">운행 현황</span>
       <div
         onClick={renewPage}
-        className="absolute right-[0%] top-[150%] z-50 rounded-lg bg-lightgreen p-2 text-white"
+        className="absolute right-[0%] top-[150%] z-50 rounded-full bg-lightgreen p-2 text-white shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
       >
         <MdAutorenew />
       </div>

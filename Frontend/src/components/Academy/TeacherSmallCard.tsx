@@ -15,7 +15,7 @@ export default memo(function TeacherSmallCard({ data }: Props) {
       <img
         src={`/api/content/${data.image}`}
         alt=""
-        className="h-[25%] w-[25%] rounded-full"
+        className="h-[25%] w-[25%] rounded-full border-[1px] border-lightgreen"
       />
       {/* 직원 정보 */}
       <div className=" ml-[3%] flex flex-col items-center">
