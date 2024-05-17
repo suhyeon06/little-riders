@@ -210,6 +210,31 @@ public class SseFacadeImpl implements SseFacade {
         }
 
 
+        long academyChildId = driveUniqueKey.getAcademyChildId();
+        if(shuttleBoardService.existsByAcademyChildId(academyChildId)){
+            ShuttleBoard shuttleBoard = shuttleBoardService.findByAcademyChildId(academyChildId);
+
+            AcademyChild academyChild = academyChildService.findById(academyChildId);
+            AcademyShuttleLandingInfoResponse.Child child = AcademyShuttleLandingInfoResponse.Child.from(academyChild);
+            AcademyShuttleLandingInfoResponse.BoardDropInfo boardResponse = AcademyShuttleLandingInfoResponse.BoardDropInfo.of(child, shuttleBoard.getLatitude(), shuttleBoard.getLongitude(), LocalDateTime.now());
+            try {
+
+                SseEmitter.SseEventBuilder event = SseEmitter.event()
+                        //event 명 (event: event example)
+                        .name("board")
+                        //event id (id: id-1) - 재연결시 클라이언트에서 `Last-Event-ID` 헤더에 마지막 event id 를 설정
+                        .id(String.valueOf("board"))
+                        //event data payload (data: SSE connected)
+                        .data(boardResponse)
+                        //SSE 연결이 끊어진 경우 재접속 하기까지 대기 시간 (retry: <RECONNECTION_TIMEOUT>)
+                        .reconnectTime(RECONNECTION_TIMEOUT);
+                sseEmitter.send(event);
+            }catch (Exception ignored){
+
+            }
+        }
+
+
         return sseEmitter;
     }
 
