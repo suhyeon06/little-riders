@@ -1,15 +1,27 @@
+import EmptyCard from './EmptyCard'
+import Title from './Title'
+
+import { Link } from 'react-router-dom'
+
 export default function QrCodePage() {
   return (
-    <div className="flex h-full w-full flex-col items-center  border border-black p-2">
+    <div className="flex h-full w-full flex-col items-center  bg-lightgreen p-2">
       {/* 제목 부분 */}
-      <span>운행 기사 / 선탑자 정보</span>
+      <Title />
+      <div className="h-5"></div>
       {/* 기사, 선탑자 카드 부분 */}
-      <div className="flex w-full justify-between border border-black">
-        <div className="w-[40%] border border-black">
-          <img src="" alt="이미지" className="w-full " />
-        </div>
-        <div className="w-[40%] border border-black">asd</div>
+      <div className="flex w-full justify-between ">
+        {/* 다음 정류장 */}
+        <EmptyCard />
+        <EmptyCard />
       </div>
+      <div className="h-5"></div>
+      <Link
+        to="/driving"
+        className="flex w-full justify-center rounded-[10px]   bg-yellow p-2 font-bold"
+      >
+        운행 시작
+      </Link>
     </div>
   )
 }
