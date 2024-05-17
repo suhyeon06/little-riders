@@ -22,11 +22,11 @@ export default function useRealTimeParentSSE({ uuid }: Props) {
     image: '',
     phoneNumber: '',
   })
-  const [shuttleInfo, setShuttleInfo] = useState({
-    name: '',
-    type: '',
-    licenseNumber: '',
-  })
+  // const [shuttleInfo, setShuttleInfo] = useState({
+  //   name: '',
+  //   type: '',
+  //   licenseNumber: '',
+  // })
 
   const [driveStatus, setDriveStatus] = useState<'pending' | 'driving' | 'end'>(
     'driving',
@@ -120,7 +120,7 @@ export default function useRealTimeParentSSE({ uuid }: Props) {
     isError,
     teacherInfo,
     driverInfo,
-    shuttleInfo,
+    // shuttleInfo,
     driveStatus,
     boardChild,
     dropChild,
