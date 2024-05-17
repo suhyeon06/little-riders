@@ -116,7 +116,7 @@ export default function Shuttle({
         drawPolylineWithList(locationInfo, realTimeMap)
       })
     }
-  }, [initData])
+  }, [initData, realTimeMap])
 
   // init 데이터가 있다면, board marker를 그린다
   useEffect(() => {
@@ -127,7 +127,7 @@ export default function Shuttle({
         drawBoardMarker(boardInfo, realTimeMap)
       })
     }
-  }, [initData, saveLocation.current])
+  }, [initData, saveLocation.current, realTimeMap])
 
   // init 데이터가 있다면, drop marker를 그린다
   useEffect(() => {
@@ -138,7 +138,7 @@ export default function Shuttle({
         drawDropMarker(dropInfo, realTimeMap)
       })
     }
-  }, [initData, saveLocation.current])
+  }, [initData, saveLocation.current, realTimeMap])
 
   // 위치 정보가 변화하고 있다면, 실시간으로 마커를 찍는다
   useEffect(() => {
@@ -151,7 +151,7 @@ export default function Shuttle({
 
       curLocationInfo.current = locationInfo
     }
-  }, [locationInfo])
+  }, [locationInfo, realTimeMap])
 
   // 위치 정보가 변화하고 있다면, 실시간으로 polyline을 그린다
   useEffect(() => {
@@ -161,7 +161,7 @@ export default function Shuttle({
     if (locationInfo) {
       drawPolylineWithList(locationInfo, realTimeMap)
     }
-  }, [locationInfo])
+  }, [locationInfo, realTimeMap])
 
   // 승차 정보가 있다면, 마커를 찍는다
   useEffect(() => {
@@ -169,7 +169,7 @@ export default function Shuttle({
       addRealTimeInfo({ ...boardInfo, status: 'BOARD' })
       drawBoardMarker(boardInfo, realTimeMap)
     }
-  }, [boardInfo, realTimeInfo])
+  }, [boardInfo, realTimeInfo, realTimeMap])
 
   // 하차 정보가 있다면, 마커를 찍는다
   useEffect(() => {
@@ -177,7 +177,7 @@ export default function Shuttle({
       addRealTimeInfo({ ...dropInfo, status: 'DROP' })
       drawDropMarker(dropInfo, realTimeMap)
     }
-  }, [dropInfo, realTimeInfo])
+  }, [dropInfo, realTimeInfo, realTimeMap])
 
   // 선택한 호차의 위치를 맵의 중심으로 한다
   useEffect(() => {

@@ -17,7 +17,10 @@ export default function ChildRegistFormBody() {
     '/child-default-img.jpg',
   )
 
-  const { register } = useFormContext<ChildRegistFormInfo>()
+  const {
+    register,
+    formState: { errors },
+  } = useFormContext<ChildRegistFormInfo>()
 
   const { beaconList } = useFetchBeaconList()
 
@@ -135,6 +138,7 @@ export default function ChildRegistFormBody() {
             className="bg-lightblue text-md w-full rounded-md border border-lightgray p-3"
             required
           />
+          <p className="pl-3 text-sm text-red">{errors.phoneNumber?.message}</p>
         </div>
       </div>
 
