@@ -3,6 +3,7 @@ import { useState } from 'react'
 import DriverSmallCard from '@components/Academy/DriverSmallCard'
 import TeacherSmallCard from '@components/Academy/TeacherSmallCard'
 import BottomSheet from '@components/Shared/BottomSheet'
+import Button from '@components/Shared/Button'
 import Loading from '@components/Shared/Loading'
 
 import {
@@ -82,13 +83,27 @@ export default function RealTimeParentView({ uuid }: Props) {
           <DriveStatus driveStatus={driveStatus} />
         </div>
       </header>
-      <BottomSheet title="운행 정보" visibleHandler={changeBottomSheetState}>
-        <div className="mx-[3%] mb-[5%] flex w-[100%] justify-around">
-          <DriverSmallCard data={teacherInfo} />
-          <TeacherSmallCard data={driverInfo} />
+      {bottomsheetState === true ? (
+        <>
+          <BottomSheet
+            title="운행 정보"
+            visibleHandler={changeBottomSheetState}
+          >
+            <div className="mx-[3%] mb-[5%] flex w-[100%] justify-around">
+              <DriverSmallCard data={teacherInfo} />
+              <TeacherSmallCard data={driverInfo} />
+            </div>
+          </BottomSheet>
+        </>
+      ) : (
+        <div className="absolute bottom-2 w-[90%] animate-bounce">
+          <Button color="bg-lightgreen" full onClick={changeBottomSheetState}>
+            <span className="text-xm font-bold text-white">
+              탑승 인원 정보 보기
+            </span>
+          </Button>
         </div>
-        <div className="mx-[3%] mb-[5%] flex w-[100%] justify-around"></div>
-      </BottomSheet>
+      )}
     </div>
   )
 }

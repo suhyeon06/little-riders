@@ -23,6 +23,9 @@ export default function BottomSheet({
         className=" absolute z-50 flex w-full flex-col items-center justify-center rounded-t-lg border-t-2 border-lightgreen bg-white"
         ref={sheet}
       >
+        <span className="absolute top-[-13%] text-[12px] font-bold text-lightgray">
+          아래로 끌어서 감추기
+        </span>
         <div className=" mb-[2%] flex w-full justify-center" ref={handle}>
           <span className="border-b-2 border-lightgreen font-bold">
             {title}

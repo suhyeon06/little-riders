@@ -17,11 +17,11 @@ export default memo(function TeacherSmallCard({ data }: Props) {
       />
       {/* 직원 정보 */}
       <div className=" ml-[3%] flex flex-col items-center">
-        <strong className="text-[80%]">{data.name} 기사님</strong>
-        <span className="text-[70%] text-darkgray">{data.phoneNumber}</span>
+        <strong className="text-[80%]">{data.name} 선생님</strong>
+        <span className="text-[70%] text-darkgray">{`${data.phoneNumber.substring(0, 2)}-${data.phoneNumber.substring(3, 6)}-${data.phoneNumber.substring(7, 10)}`}</span>
       </div>
       <a
-        href="tel:01092124492"
+        href={`tel:${data.phoneNumber}`}
         className="flex w-full items-center justify-center rounded-md bg-lightgreen py-[1px] text-[70%] font-bold text-white"
       >
         <IoCallSharp /> 전화 걸기
