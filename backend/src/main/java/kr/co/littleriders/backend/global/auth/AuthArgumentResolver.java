@@ -20,7 +20,6 @@ import kr.co.littleriders.backend.global.error.exception.AuthException;
 import kr.co.littleriders.backend.global.jwt.JwtMemberInfo;
 import kr.co.littleriders.backend.global.jwt.JwtProvider;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.core.MethodParameter;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.support.WebDataBinderFactory;
@@ -30,7 +29,6 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
     private final JwtProvider jwtProvider;
     private final AcademyService academyService;
@@ -47,8 +45,6 @@ public class AuthArgumentResolver implements HandlerMethodArgumentResolver {
 
 
         Class<?> parameterType = parameter.getParameterType();
-
-        log.info("resolving argument before casting = {}", parameterType);
 
         //코드상에서 @Auth 가 붙었을떄 valid 한 타입인지 확인
         MemberType parameterMemberType = MemberType.valueOf(parameterType); //parameterType.equals(AuthFamily.class) ? MemberType.FAMILY : MemberType.ACADEMY;

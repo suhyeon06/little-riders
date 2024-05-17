@@ -2,10 +2,7 @@ package kr.co.littleriders.backend.application.facade.impl;
 
 
 import kr.co.littleriders.backend.application.dto.request.ShuttleLocationRequest;
-import kr.co.littleriders.backend.application.dto.response.AcademyShuttleLandingInfoResponse;
-import kr.co.littleriders.backend.application.dto.response.ShuttleEndDriveSseResponse;
-import kr.co.littleriders.backend.application.dto.response.ShuttleLocationResponse;
-import kr.co.littleriders.backend.application.dto.response.SmsUserShuttleLandingInfoResponse;
+import kr.co.littleriders.backend.application.dto.response.*;
 import kr.co.littleriders.backend.application.facade.SseFacade;
 import kr.co.littleriders.backend.domain.academy.AcademyChildService;
 import kr.co.littleriders.backend.domain.academy.AcademyService;
@@ -13,6 +10,8 @@ import kr.co.littleriders.backend.domain.academy.entity.Academy;
 import kr.co.littleriders.backend.domain.academy.entity.AcademyChild;
 import kr.co.littleriders.backend.domain.driver.DriverService;
 import kr.co.littleriders.backend.domain.driver.entity.Driver;
+import kr.co.littleriders.backend.domain.history.ShuttleBoardDropHistoryService;
+import kr.co.littleriders.backend.domain.history.entity.ShuttleBoardDropHistory;
 import kr.co.littleriders.backend.domain.shuttle.*;
 import kr.co.littleriders.backend.domain.shuttle.entity.*;
 import kr.co.littleriders.backend.domain.teacher.TeacherService;
@@ -51,6 +50,7 @@ public class SseFacadeImpl implements SseFacade {
     private final TeacherService teacherService;
     private final DriverService driverService;
     private final ShuttleService shuttleService;
+    private final ShuttleBoardDropHistoryService shuttleBoardDropHistoryService;
 
     private final AcademyChildService academyChildService;
 
@@ -68,14 +68,14 @@ public class SseFacadeImpl implements SseFacade {
     }
 
     @Override
-    public void broadcastBoardByAcademyIdAndViewerId(long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude) {
-        broadcastBoardDropByAcademyIdAndViewerId(academyId,viewerUuid,academyChild,latitude,longitude,"board");
+    public void broadcastBoardByAcademyIdAndViewerId(long shuttleId, long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude) {
+        broadcastBoardDropByAcademyIdAndViewerId(shuttleId, academyId,viewerUuid,academyChild,latitude,longitude,"board");
     }
 
 
     @Override
-    public void broadcastDropByAcademyIdAndViewerId(long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude) {
-        broadcastBoardDropByAcademyIdAndViewerId(academyId,viewerUuid,academyChild,latitude,longitude,"drop");
+    public void broadcastDropByAcademyIdAndViewerId(long shuttleId, long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude) {
+        broadcastBoardDropByAcademyIdAndViewerId(shuttleId, academyId,viewerUuid,academyChild,latitude,longitude,"drop");
     }
 
     @Override
@@ -133,6 +133,35 @@ public class SseFacadeImpl implements SseFacade {
 
     @Override
     public SseEmitter createSmsUserSseConnectionByUuid(String uuid) {
+
+        SseEmitter sseEmitter = createSse();
+        //if exists in mongo then return history
+        if(shuttleBoardDropHistoryService.existsByDriveUniqueKeyUuid(uuid)){
+            ShuttleBoardDropHistory shuttleBoardDropHistory = shuttleBoardDropHistoryService.findByDriveUniqueKeyUuid(uuid);
+
+            SmsUserHistoryResponse response = SmsUserHistoryResponse.from(shuttleBoardDropHistory);
+
+            try {
+                SseEmitter.SseEventBuilder event = SseEmitter.event()
+                        //event 명 (event: event example)
+                        .name("history")
+                        //event id (id: id-1) - 재연결시 클라이언트에서 `Last-Event-ID` 헤더에 마지막 event id 를 설정
+                        .id(String.valueOf("history"))
+                        //event data payload (data: SSE connected)
+                        .data(response)
+                        //SSE 연결이 끊어진 경우 재접속 하기까지 대기 시간 (retry: <RECONNECTION_TIMEOUT>)
+                        .reconnectTime(RECONNECTION_TIMEOUT);
+                sseEmitter.send(event);
+            } catch (Exception ignored) {
+            }
+            sseEmitter.complete();
+
+
+            return  sseEmitter;
+        }
+
+
+
         DriveUniqueKey driveUniqueKey = driveUniqueKeyService.findByUuid(uuid);
         long shuttleId = driveUniqueKey.getShuttleId();
 
@@ -154,7 +183,7 @@ public class SseFacadeImpl implements SseFacade {
 
         SmsUserShuttleLandingInfoResponse smsUserShuttleLandingInfoResponse = SmsUserShuttleLandingInfoResponse.of(teacher, driver, shuttle, shuttleLocationList);
 
-        SseEmitter sseEmitter = createSse();
+
 
         if (!subscribeMapByViewerUuid.containsKey(uuid)) {
             subscribeMapByViewerUuid.put(uuid, new ArrayList<>());
@@ -223,7 +252,7 @@ public class SseFacadeImpl implements SseFacade {
                     LocalDateTime time = shuttleDrop.getTime();
 
                     AcademyShuttleLandingInfoResponse.Child child = AcademyShuttleLandingInfoResponse.Child.from(academyChild);
-                    dropInfoList.add(AcademyShuttleLandingInfoResponse.BoardDropInfo.of(child, latitude, longitude, time));
+                    dropInfoList.add(AcademyShuttleLandingInfoResponse.BoardDropInfo.of(child, shuttleId,latitude, longitude, time));
 
                 }
 
@@ -236,7 +265,7 @@ public class SseFacadeImpl implements SseFacade {
                     LocalDateTime time = shuttleBoard.getTime();
 
                     AcademyShuttleLandingInfoResponse.Child child = AcademyShuttleLandingInfoResponse.Child.from(academyChild);
-                    boardInfoList.add(AcademyShuttleLandingInfoResponse.BoardDropInfo.of(child, latitude, longitude, time));
+                    boardInfoList.add(AcademyShuttleLandingInfoResponse.BoardDropInfo.of(child, shuttleId,latitude, longitude, time));
                 }
 
 
@@ -285,9 +314,9 @@ public class SseFacadeImpl implements SseFacade {
     }
 
 
-    private void broadcastBoardDropByAcademyIdAndViewerId(long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude,String type){
+    private void broadcastBoardDropByAcademyIdAndViewerId(long shuttleId, long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude,String type){
         AcademyShuttleLandingInfoResponse.Child child = AcademyShuttleLandingInfoResponse.Child.from(academyChild);
-        AcademyShuttleLandingInfoResponse.BoardDropInfo response = AcademyShuttleLandingInfoResponse.BoardDropInfo.of(child, latitude, longitude, LocalDateTime.now());
+        AcademyShuttleLandingInfoResponse.BoardDropInfo response = AcademyShuttleLandingInfoResponse.BoardDropInfo.of(child, shuttleId,latitude, longitude, LocalDateTime.now());
 
 
         //내 아이를 보고있는 사람에게만 전송

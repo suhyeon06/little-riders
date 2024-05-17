@@ -13,9 +13,9 @@ public interface SseFacade {
 
     void broadcastShuttleLocationByShuttleId(long shuttleId, ShuttleLocationRequest shuttleLocationRequest);
 
-    void broadcastBoardByAcademyIdAndViewerId(long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude);
+    void broadcastBoardByAcademyIdAndViewerId(long shuttleId, long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude);
 
-    void broadcastDropByAcademyIdAndViewerId(long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude);
+    void broadcastDropByAcademyIdAndViewerId(long shuttleId, long academyId, String viewerUuid, AcademyChild academyChild, double latitude, double longitude);
 
     void broadcastStartDriveByAcademyId(long academyId, ShuttleDrive shuttleDrive);
 

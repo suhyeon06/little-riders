@@ -20,7 +20,7 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler
     protected ResponseEntity<LittleRidersErrorResponse> handleBaseException(LittleRidersException e) {
-        e.printStackTrace();
+//        e.printStackTrace();
         final LittleRidersErrorCode littleRidersErrorCode = e.getErrorCode();
         return ResponseEntity.status(littleRidersErrorCode.getStatus()).body(LittleRidersErrorResponse.of(littleRidersErrorCode.getCode(),littleRidersErrorCode.getMessage()));
     }
@@ -29,7 +29,7 @@ public class GlobalExceptionHandler {
     protected ResponseEntity<?> handleMethodArgumentNotValidException( //todo : 익셉션 변경 필요
             MethodArgumentNotValidException e ) {
 //        final ErrorResponse response = ErrorResponse.of(API_ERROR_INPUT_INVALID_VALUE, e.getBindingResult());
-        log.warn(e.getMessage());
+//        log.warn(e.getMessage());
         Map<String,String> response = new HashMap<>();
         response.put("code","ERROR_1");
         response.put("error",e.getMessage());

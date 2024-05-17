@@ -39,9 +39,9 @@ public class AcademyShuttleLandingInfoResponse {
         }
     }
 
-    public record BoardDropInfo(Child child, double latitude, double longitude, LocalDateTime time){
-        public static BoardDropInfo of(Child child, double latitude, double longitude, LocalDateTime time){
-            return new BoardDropInfo(child,latitude,longitude,time);
+    public record BoardDropInfo(Child child, long shuttleId, double latitude, double longitude, LocalDateTime time){
+        public static BoardDropInfo of(Child child,long shuttleId, double latitude, double longitude, LocalDateTime time){
+            return new BoardDropInfo(child,shuttleId,latitude,longitude,time);
         }
     }
 
