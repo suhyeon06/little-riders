@@ -62,6 +62,10 @@ export default function DispatchPage() {
               routeList.find((route: Route) => route.id === selectedRouteId)
                 .name
             }
+            selectedRouteType={
+              routeList.find((route: Route) => route.id === selectedRouteId)
+                .type
+            }
             selectedRouteId={selectedRouteId}
             setSelectedRouteId={setSelectedRouteId}
             handleAddButton={handleAddButton}

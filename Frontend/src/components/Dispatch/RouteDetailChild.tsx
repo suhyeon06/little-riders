@@ -23,6 +23,7 @@ type Props = {
   childItems: {
     [key: string]: ChildInfo[]
   }
+  selectedRouteType: string | undefined
   setActiveChildId: React.Dispatch<
     React.SetStateAction<UniqueIdentifier | undefined>
   >
@@ -42,6 +43,7 @@ type Props = {
 export default function RouteDetailChild({
   sensors,
   childItems,
+  selectedRouteType,
   setActiveChildId,
   setActiveChildName,
   setChildItems,
@@ -80,7 +82,9 @@ export default function RouteDetailChild({
         isPending={isRouteDetailPending}
       />
       <SortableContainer
-        subject="하차할 어린이"
+        subject={
+          selectedRouteType === 'board' ? '승차할 어린이' : '하차할 어린이'
+        }
         id="selectedChildList"
         items={childItems['selectedChildList']}
         isDisabled={childDragDisabled}

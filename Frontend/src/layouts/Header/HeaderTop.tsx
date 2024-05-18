@@ -29,7 +29,7 @@ export default function HeaderTop() {
   }
 
   return (
-    <div className="flex h-1/2 items-center justify-between">
+    <div className="flex h-3/5 items-center justify-between bg-white px-[200px]">
       {/* Logo */}
       <div className="flex h-9 w-48 items-center gap-2">
         <img src="/bus.svg" alt="" className="w-1/4" />

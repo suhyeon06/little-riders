@@ -33,6 +33,7 @@ interface Props {
   selectedRouteId: number
   selectedRouteName: string
   setSelectedRouteId: React.Dispatch<React.SetStateAction<number>>
+  selectedRouteType: string | undefined
   mapRef: RefObject<naver.maps.Map>
   handleAddButton: () => void
 }
@@ -42,6 +43,7 @@ export default function RouteDetailSlide({
   mapRef,
   selectedRouteId,
   selectedRouteName,
+  selectedRouteType,
   setSelectedRouteId,
   handleAddButton,
 }: Props) {
@@ -326,6 +328,7 @@ export default function RouteDetailSlide({
           <RouteDetailChild
             sensors={sensors}
             childItems={childItems}
+            selectedRouteType={selectedRouteType}
             setActiveChildId={setActiveChildId}
             setActiveChildName={setActiveChildName}
             setChildItems={setChildItems}

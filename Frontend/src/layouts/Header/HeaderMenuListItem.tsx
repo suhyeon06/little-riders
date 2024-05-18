@@ -7,7 +7,8 @@ interface Props {
 }
 
 export default function HeaderMenuListItem({ text, path }: Props) {
-  const baseClassName = 'flex h-full items-center justify-center'
+  const baseClassName =
+    'flex h-full items-center justify-center transition-all hover:scale-105 active:scale-110'
   const activeClassName = 'border-b-2 border-b-darkgreen'
 
   return (
