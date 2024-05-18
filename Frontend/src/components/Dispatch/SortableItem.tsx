@@ -54,7 +54,7 @@ export default function SortableItem({
       return <p className="w-8 text-center text-xl font-bold">{index + 1}</p>
     if (type === 'stationList')
       return <img src="/bus-stop-icon.svg" className="w-8" />
-    if (type.includes('academyChildList'))
+    if (type === 'academyChildList' || type === 'selectedChildList')
       return gender === 'FEMALE' ? (
         <img src="/daughter.svg" className="w-8" />
       ) : (
@@ -99,7 +99,7 @@ export default function SortableItem({
       ref={setNodeRef}
       {...attributes}
       {...listeners}
-      className={`m-2 h-auto w-60 rounded-sm border-2 p-3 shadow-sm transition-colors ${isClicked ? ' border-lightgreen bg-lightgreen text-white' : isMouseOver ? 'border-lightgreen bg-white' : 'bg-white'} `}
+      className={`m-2 h-auto w-64 rounded-sm border-2 p-3 shadow-sm transition-colors max-2xl:w-52 ${isClicked ? ' border-lightgreen bg-lightgreen text-white' : isMouseOver ? 'border-lightgreen bg-white' : 'bg-white'} `}
       onClick={() => {
         if (onClick) {
           onClick(Number(id.toString()))

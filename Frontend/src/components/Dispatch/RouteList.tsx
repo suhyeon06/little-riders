@@ -46,7 +46,7 @@ export default function RouteList({
     setIsAddButtonClicked(false)
   }
   return (
-    <div className="h-full w-96 border shadow-md">
+    <div className="h-full w-96 border shadow-md max-2xl:w-72">
       <div className="mx-5 mt-5 flex justify-between">
         <p className="text-xl">노선 목록</p>
         <button

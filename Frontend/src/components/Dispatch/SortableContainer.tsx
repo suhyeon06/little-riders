@@ -74,7 +74,7 @@ export default function SortableContainer({
         </p>
         <div
           ref={setNodeRef}
-          className="h-5/6 w-72 flex-row items-center overflow-y-scroll rounded-md border bg-white p-1 shadow-md"
+          className="h-5/6 w-72 flex-row items-center overflow-y-scroll rounded-md border bg-white p-1 shadow-md max-2xl:w-60"
         >
           {items.map((item, index) =>
             item ? (

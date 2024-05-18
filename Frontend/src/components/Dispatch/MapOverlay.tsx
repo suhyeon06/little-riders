@@ -148,7 +148,10 @@ export default function MapOverlay({ handleCloseButton, mapRef }: Props) {
           </Modal>
         )}
       </div>
-      <div className="mt-2 flex justify-end self-end px-3">
+      <div className="mt-2 flex items-center justify-end self-end px-3">
+        <p className=" me-3 text-rose-600">
+          정류장을 추가하기 전에 수정 사항을 반드시 저장해주세요!
+        </p>
         <Button
           color="rounded w-auto text-darkgreen transition ease-in-out hover:bg-gray-100 bg-white active:bg-darkgreen active:bg-opacity-40"
           onClick={handleAddStation}
@@ -156,7 +159,7 @@ export default function MapOverlay({ handleCloseButton, mapRef }: Props) {
           현재 위치 추가하기
         </Button>
         <Button
-          color="rounded text-gray-500 py-1 transition ease-in-out hover:bg-gray-100 bg-white active:bg-gray-300"
+          color="rounded text-gray-500 w-auto transition ease-in-out hover:bg-gray-100 bg-white active:bg-gray-300"
           onClick={handleCloseButton}
         >
           취소하기

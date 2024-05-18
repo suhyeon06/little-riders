@@ -28,7 +28,9 @@ export function MapHook(
     options = DEFAULT_OPTION,
   ) => {
     if (mapRef!.current) return
-    mapRef!.current = new naver.maps.Map(mapDiv.current!, options)
+    mapRef!.current = new naver.maps.Map(mapDiv.current!, {
+      ...options,
+    })
   }
 
   /**
@@ -140,6 +142,8 @@ export function MapHook(
    * @param stationRoute station 배열 정보
    */
   const drawRoute = (
+    lat: number = BASE_LAT,
+    lng: number = BASE_LNG,
     stationRoute: Station[],
     markerList: naver.maps.Marker[],
     setMarkerList: {
@@ -152,7 +156,7 @@ export function MapHook(
     const newPathList = []
 
     // TODO 이부분에 args 로 받은 학원 좌표 추가
-    newPathList.push(new naver.maps.LatLng(BASE_LAT, BASE_LNG))
+    newPathList.push(new naver.maps.LatLng(lat, lng))
     for (let k = 0; k < stationRoute.length; k++) {
       newPathList.push(
         new naver.maps.LatLng(
@@ -162,7 +166,7 @@ export function MapHook(
       )
     }
     // TODO 여기도 마찬가지로 학원 좌표 추가
-    newPathList.push(new naver.maps.LatLng(BASE_LAT, BASE_LNG))
+    newPathList.push(new naver.maps.LatLng(lat, lng))
 
     drawRouteMarkers(
       setMarkerList,
