@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 
 import DriverSmallCard from '@components/Academy/DriverSmallCard'
 import TeacherSmallCard from '@components/Academy/TeacherSmallCard'
@@ -15,13 +15,11 @@ import useGeoLocation from '@hooks/parent/useGeoLocation'
 import useRealTimeParentSSE from '@hooks/parent/useRealTimeParentSSE'
 
 import CenterWidget from './CenterWidget'
+import CenterWidget2 from './CenterWidget2'
 import ParentNaverMap from './ParentNaverMap'
 import ParentViewHeader from './ParentViewHeader'
 import './ParentViewPage.css'
 import ShowDetailButton from './ShowDetailButton'
-
-import COLOR_PALETTE from '@style/ColorPalette'
-import { AiOutlineAim } from 'react-icons/ai'
 
 interface Props {
   uuid: string | undefined
@@ -86,6 +84,18 @@ export default function RealTimeParentView({ uuid }: Props) {
     parentMap?.panTo(location)
   }
 
+  useEffect(() => {
+    if (!driverInfo) return
+    const img = new Image()
+    img.src = `/api/content/${driverInfo.image}`
+  }, [driverInfo])
+
+  useEffect(() => {
+    if (!teacherInfo) return
+    const img = new Image()
+    img.src = `/api/content/${teacherInfo.image}`
+  }, [teacherInfo])
+
   if (isLoading)
     return (
       <div className=" relative mx-auto my-0 flex h-[100dvh] min-w-[360px] max-w-[768px] touch-none flex-col items-center justify-center bg-white">
@@ -112,15 +122,7 @@ export default function RealTimeParentView({ uuid }: Props) {
             title={`운행 정보`}
             visibleHandler={changeBottomSheetState}
           >
-            <div
-              onClick={goCenter}
-              className="absolute -top-[30%] right-[2.5%] z-50 rounded-full bg-white p-3 text-white shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
-            >
-              <AiOutlineAim
-                color={COLOR_PALETTE['lightgreen']}
-                className=" text-[20px]"
-              />
-            </div>
+            <CenterWidget2 goCenter={goCenter} />
             <div className="mx-[3%] mb-[5%] flex w-[100%] justify-around ">
               <DriverSmallCard data={driverInfo} />
               <TeacherSmallCard data={teacherInfo} />
