@@ -1,67 +1,61 @@
+import { useState } from 'react'
+
 import EmptyCard from './EmptyCard'
 import Title from './Title'
 
-import {  useNavigate } from 'react-router-dom'
-
-import { useState } from 'react';
-
-
+import { useNavigate } from 'react-router-dom'
 
 declare global {
   interface Window {
     driverState: {
-      setInfo: any;
-    };
+      setInfo: any
+    }
     teacherState: {
-      setInfo: any;
-    };
+      setInfo: any
+    }
   }
 }
 
-
-
 window.driverState = {
-  setInfo: () => { },
-};
-
+  setInfo: () => {},
+}
 
 window.teacherState = {
-  setInfo: () => { },
-};
-
-
-
-
-
-
+  setInfo: () => {},
+}
 
 export default function QrCodePage() {
-
   const navigate = useNavigate()
 
   const [driverInfo, setDriverInfo] = useState({
-    name: "기사님",
-    phoneNumber: "연락처",
-    image : null
+    name: '기사님',
+    phoneNumber: '연락처',
+    image: null,
   })
 
   const [teacherInfo, setTeacherInfo] = useState({
-    name: "선생님",
-    phoneNumber: "연락처",
-    image : null
+    name: '선생님',
+    phoneNumber: '연락처',
+    image: null,
   })
   // const [driverName, setDriverName] = useState("짱구 씨발럼");
   // const [driverImage, setDriverImage]
 
-  window.driverState.setInfo = setDriverInfo;
-  window.teacherState.setInfo = setTeacherInfo;
-
-
+  window.driverState.setInfo = setDriverInfo
+  window.teacherState.setInfo = setTeacherInfo
 
   return (
     <div className="flex h-full w-full flex-col items-center  bg-lightgreen p-2">
       {/* 제목 부분 */}
       <Title />
+      <button
+        className=" absolute left-20 me-3 flex rounded-[10px] border-2 border-yellow bg-white p-2 font-bold transition-all ease-in-out active:bg-lightyellow"
+        onClick={() => {
+          navigate('/')
+        }}
+      >
+        뒤로가기
+      </button>
       <div className="h-5"></div>
       {/* 기사, 선탑자 카드 부분 */}
       <div className="flex w-full justify-between ">
@@ -77,11 +71,18 @@ export default function QrCodePage() {
           image={teacherInfo.image}
         />
       </div>
-      <div className="h-5"></div>
+      <div className="h-3"></div>
       <button
-        className="flex w-full justify-center rounded-[10px]   bg-yellow p-2 font-bold"
-        onClick={async () => { 
+        className="flex w-full justify-center rounded-[10px] bg-yellow p-2 font-bold transition-all active:bg-lightyellow"
+        onClick={async () => {
           if (await window.mainHandler.canMoveStartDrivePage()) {
+<<<<<<< dcc5743fcd95c1dcf8950ad4457512d66bf367ee
+            console.error('jsjsjs')
+            window.mainHandler.startDrive()
+            navigate('/driving')
+          }
+        }}
+=======
             window.mainHandler.startDrive()
             window.mainHandler.beep()
             navigate("/driving")
@@ -92,6 +93,7 @@ export default function QrCodePage() {
           }
 
          }}
+>>>>>>> cf0b845f2bee97625bece2d35b1027267512b325
       >
         운행 시작
       </button>

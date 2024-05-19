@@ -1,22 +1,18 @@
-import { useNavigate } from 'react-router-dom'
 import { useState } from 'react'
+
+import { useNavigate } from 'react-router-dom'
 
 declare global {
   interface Window {
     shuttleState: {
-
-      setInfo: any;
-    };
+      setInfo: any
+    }
   }
 }
 
-
 window.shuttleState = {
-
-  setInfo: () => { }
-};
-
-
+  setInfo: () => {},
+}
 
 export default function Landing() {
   const navigate = useNavigate()
@@ -26,20 +22,22 @@ export default function Landing() {
   // const [type, setType] = useState("")
 
   const [shuttleInfo, setShuttleInfo] = useState({
-    name: "",
-    image: "https://littleriders.co.kr/api/content/default.jpg",
-    licenseNumber: "",
-    type: ""
-  });
+    name: '',
+    image: 'https://littleriders.co.kr/api/content/default.jpg',
+    licenseNumber: '',
+    type: '',
+  })
 
   window.shuttleState.setInfo = setShuttleInfo
-
 
   return (
     <div className="flex h-full w-full flex-row border p-4">
       <div className="flex w-1/2 flex-col items-center justify-center ">
         <div className="m-2 h-1/2 w-5/6">
-          <img className="h-full" src={shuttleInfo.image}></img>
+          <img
+            className="h-full w-full object-contain "
+            src={shuttleInfo.image}
+          ></img>
         </div>
         <div className="flex h-1/2 w-5/6 flex-col divide-y-[1px] rounded border ">
           <div className="flex h-full w-full">
@@ -63,7 +61,7 @@ export default function Landing() {
               번호판
             </div>
             <div className="flex w-1/2 items-center justify-center p-2 text-center text-2xl">
-            {shuttleInfo.licenseNumber}
+              {shuttleInfo.licenseNumber}
             </div>
           </div>
         </div>

@@ -1,22 +1,19 @@
-import {useState } from 'react'
+import { useState } from 'react'
 
 import { useNavigate } from 'react-router-dom'
-
 
 declare global {
   interface Window {
     routeState: {
-      setInfo: any;
-    };
-    mainHandler: any;
+      setInfo: any
+    }
+    mainHandler: any
   }
 }
 
 window.routeState = {
-  setInfo: () => { },
-};
-
-
+  setInfo: () => {},
+}
 
 export default function Route() {
   const [routeList, setRouteList] = useState<any>()
@@ -27,13 +24,13 @@ export default function Route() {
   const handlePrevButtonClick = () => {
     navigate('/')
   }
-  window.routeState.setInfo  = setRouteList
+  window.routeState.setInfo = setRouteList
 
   return (
     <div className="box-border h-full p-1">
       <div className="flex h-[50px] justify-between">
         <button
-          className="flex items-center justify-center rounded bg-lightgreen p-2 px-10 font-bold"
+          className="flex items-center justify-center rounded border-2 border-lightgreen bg-lightgreen p-2 px-10 font-bold transition-all active:bg-white"
           onClick={() => {
             window.mainHandler.choiceRouteId(null);
             window.mainHandler.rerenderShuttleInfo();
@@ -74,14 +71,12 @@ export default function Route() {
                 <div
                   key={route.id}
                   className={`cursor-pointer p-2 text-3xl ${route.id === selectedRoute?.id && 'bg-yellow'}`}
-                  onClick={() =>{
+                  onClick={() => {
                     setSelectedRoute(() => route)
                     window.mainHandler.choiceRouteId(route.id);
                     window.mainHandler.beep();
                     // console.log(route.id)
-                  }
-                    
-                    }
+                  }}
                 >
                   {route.name}
                 </div>
