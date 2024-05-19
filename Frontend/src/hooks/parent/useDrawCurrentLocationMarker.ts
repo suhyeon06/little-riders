@@ -11,7 +11,7 @@ interface Props {
 export default function useRedrawCurrentLocationMarker({
   location,
   naverMap,
-  dir = 0,
+  dir = 90,
 }: Props) {
   const [currentMarker, setCurrentMarker] = useState<naver.maps.Marker>()
 
@@ -81,5 +81,5 @@ export default function useRedrawCurrentLocationMarker({
     })
 
     setCurrentMarker(marker)
-  }, [location])
+  }, [location, dir])
 }
