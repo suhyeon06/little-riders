@@ -5,11 +5,13 @@ import { ILocation } from '@types'
 interface Props {
   location: ILocation | undefined
   naverMap: naver.maps.Map | undefined
+  dir: number | undefined
 }
 
 export default function useRedrawCurrentLocationMarker({
   location,
   naverMap,
+  dir,
 }: Props) {
   const [currentMarker, setCurrentMarker] = useState<naver.maps.Marker>()
 
@@ -31,7 +33,7 @@ export default function useRedrawCurrentLocationMarker({
           justify-content: center;
           align-items: center;
           background-color: transparent;
-          transform: rotate(${location.heading}deg)
+          transform: rotate(${dir}deg)
         "
       >
         <div

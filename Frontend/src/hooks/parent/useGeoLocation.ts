@@ -5,6 +5,7 @@ import { ILocation } from '@types'
 const useGeoLocation = (options = {}) => {
   // 내 위치 정보 저장
   const [location, setLocation] = useState<ILocation>()
+  const [dir, setDir] = useState<number>()
   // 에러 메세지 저장
   const [error, setError] = useState('')
   // watch 인스턴스를 취소할 수 있도록 Geolocation의 `watchPosition`에서 반환된 ID를 저장합니다.
@@ -36,6 +37,12 @@ const useGeoLocation = (options = {}) => {
   }
 
   useEffect(() => {
+    function handleOrientation(event: any) {
+      const alpha = event.alpha
+      setDir(alpha)
+    }
+    window.addEventListener('deviceorientation', handleOrientation)
+
     const { geolocation } = navigator
 
     // 사용된 브라우저에서 지리적 위치(Geolocation)가 정의되지 않은 경우 오류로 처리합니다.
@@ -55,7 +62,7 @@ const useGeoLocation = (options = {}) => {
     return cancelLocationWatch
   }, [options])
 
-  return { location, cancelLocationWatch, error }
+  return { location, cancelLocationWatch, error, dir }
 }
 
 export default useGeoLocation

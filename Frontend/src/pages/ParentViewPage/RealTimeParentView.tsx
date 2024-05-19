@@ -29,7 +29,7 @@ interface Props {
 
 const geolocationOptions = {
   enableHighAccuracy: true,
-  timeout: 1000 * 10,
+  timeout: 2000,
   maximumAge: 1000 * 3600 * 24,
 }
 
@@ -53,9 +53,10 @@ export default function RealTimeParentView({ uuid }: Props) {
     driveLocationInfo,
   )
   // 디바이스 GPS 위치 좌표
-  const { location } = useGeoLocation(geolocationOptions)
+  const { location, dir } = useGeoLocation(geolocationOptions)
+  console.log(location)
   //  좌표 받아서 디바이스 마커 찍기
-  useDrawCurrentLocationMarker({ location, naverMap: parentMap })
+  useDrawCurrentLocationMarker({ location, naverMap: parentMap, dir })
 
   // 데이터 변경에 따라 폴리라인,마커 찍기, 중심 좌표 이동
   useRedrawPolyLineParentMap({
