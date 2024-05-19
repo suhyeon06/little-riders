@@ -29,7 +29,7 @@ interface Props {
 
 const geolocationOptions = {
   enableHighAccuracy: true,
-  timeout: 1000 * 10,
+  timeout: Infinity,
   maximumAge: 1000 * 3600 * 24,
 }
 
