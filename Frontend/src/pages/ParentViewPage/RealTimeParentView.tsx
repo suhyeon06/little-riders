@@ -10,6 +10,8 @@ import {
   useRedrawPolyLineParentMap,
   useSetParentMap,
 } from '@hooks/parent/map'
+import useDrawCurrentLocationMarker from '@hooks/parent/useDrawCurrentLocationMarker'
+import useGeoLocation from '@hooks/parent/useGeoLocation'
 import useRealTimeParentSSE from '@hooks/parent/useRealTimeParentSSE'
 
 import CenterWidget from './CenterWidget'
@@ -24,6 +26,13 @@ import { AiOutlineAim } from 'react-icons/ai'
 interface Props {
   uuid: string | undefined
 }
+
+const geolocationOptions = {
+  enableHighAccuracy: true,
+  timeout: 1000 * 10,
+  maximumAge: 1000 * 3600 * 24,
+}
+
 export default function RealTimeParentView({ uuid }: Props) {
   // SSE + 관련 데이터들 state로 관리
   const {
@@ -43,6 +52,11 @@ export default function RealTimeParentView({ uuid }: Props) {
     isError,
     driveLocationInfo,
   )
+  // 디바이스 GPS 위치 좌표
+  const { location } = useGeoLocation(geolocationOptions)
+  //  좌표 받아서 디바이스 마커 찍기
+  useDrawCurrentLocationMarker({ location, naverMap: parentMap })
+
   // 데이터 변경에 따라 폴리라인,마커 찍기, 중심 좌표 이동
   useRedrawPolyLineParentMap({
     naverMap: parentMap,
@@ -68,6 +82,7 @@ export default function RealTimeParentView({ uuid }: Props) {
     const location = new naver.maps.LatLng(recent.latitude, recent.longitude)
     parentMap?.panTo(location)
   }
+
   if (isLoading)
     return (
       <div className=" relative mx-auto my-0 flex h-[100dvh] min-w-[360px] max-w-[768px] touch-none flex-col items-center justify-center bg-white">

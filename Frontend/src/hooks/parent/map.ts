@@ -42,6 +42,10 @@ export function useSetParentMap(
   return { naverMap }
 }
 
+/**
+ *
+ * 폴리라인,마커 그리기
+ */
 export function useRedrawPolyLineParentMap({
   naverMap,
   data,
@@ -125,6 +129,9 @@ export function useRedrawPolyLineParentMap({
   }, [data, naverMap])
 }
 
+/**
+ * 승하차 마커 그리기
+ */
 export function useDrawChildMarkerParentMap({
   boardChild,
   dropChild,

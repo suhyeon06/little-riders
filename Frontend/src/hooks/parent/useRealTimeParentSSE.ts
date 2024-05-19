@@ -100,6 +100,9 @@ export default function useRealTimeParentSSE({ uuid }: Props) {
       setIsError(true)
       if (e.error) {
         // 에러 발생 시 할 일
+        eventSource.close()
+        setIsLoading(false)
+        setIsError(true)
       }
 
       if (e.target.readyState === EventSource.CLOSED) {

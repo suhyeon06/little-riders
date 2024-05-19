@@ -8,6 +8,7 @@ import { IoCallSharp } from 'react-icons/io5'
 interface Props {
   data: SSE_DriverInfo
 }
+
 export default memo(function DriverSmallCard({ data }: Props) {
   return (
     <div className="border-ligtgray relative flex h-[100%] w-[43%]  flex-col items-center justify-center rounded-xl  border-[1px] border-lightgray p-[2%] ">
