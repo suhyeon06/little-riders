@@ -29,7 +29,7 @@ interface Props {
 
 const geolocationOptions = {
   enableHighAccuracy: true,
-  timeout: 2000,
+  timeout: 1000 * 10,
   maximumAge: 1000 * 3600 * 24,
 }
 
@@ -54,7 +54,6 @@ export default function RealTimeParentView({ uuid }: Props) {
   )
   // 디바이스 GPS 위치 좌표
   const { location, dir } = useGeoLocation(geolocationOptions)
-  console.log(location)
   //  좌표 받아서 디바이스 마커 찍기
   useDrawCurrentLocationMarker({ location, naverMap: parentMap, dir })
 
@@ -72,12 +71,15 @@ export default function RealTimeParentView({ uuid }: Props) {
   })
   // bottomSheet
   const [bottomsheetState, setBottomSheetState] = useState(false)
+
   const changeBottomSheetState = useCallback(() => {
     setBottomSheetState(!bottomsheetState)
   }, [bottomsheetState])
+
   const renewPage = useCallback(() => {
     window.location.reload()
   }, [])
+
   const goCenter = () => {
     const recent = driveLocationInfo[driveLocationInfo.length - 1]
     const location = new naver.maps.LatLng(recent.latitude, recent.longitude)
@@ -107,7 +109,7 @@ export default function RealTimeParentView({ uuid }: Props) {
       {bottomsheetState === true ? (
         <>
           <BottomSheet
-            title="운행 정보"
+            title={`운행 정보`}
             visibleHandler={changeBottomSheetState}
           >
             <div
