@@ -1,0 +1,24 @@
+FROM node:20.11.1 as mainBuilder
+
+WORKDIR /app
+COPY ./Frontend .
+COPY ./exec/.env .
+
+RUN npm install
+RUN npm run build
+
+
+FROM node:20.11.1 as deviceBuilder
+
+WORKDIR /app
+COPY ./device_frontend .
+
+RUN npm install
+RUN npm run build
+
+
+
+
+FROM nginx
+COPY --from=mainBuilder /app/dist /main/html
+COPY --from=deviceBuilder /app/dist /device/html

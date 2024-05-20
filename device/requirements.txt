@@ -1,0 +1,9 @@
+PyQt5
+gTTS
+PyQtWebEngine
+geopy
+bleak
+construct
+sqlalchemy
+pynmea2
+pygame

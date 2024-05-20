@@ -1,0 +1,19 @@
+@keyframes blink-effect {
+  50% {
+    opacity: 0;
+  }
+}
+.light {
+  /* box-shadow: 0 0 10px transparentize(red, 0.5); */
+  filter: drop-shadow(0 0 2px red);
+  animation: blink-effect 1.3s step-end infinite;
+}
+@font-face {
+  font-family: 'IBMPlexSansKR-RegularTTF';
+  src: url('/public/IBMPlexSansKR-RegularTTF.ttf') format('ttf');
+  font-weight: normal;
+  font-style: normal;
+}
+#mobile {
+  font-family: IBMPlexSansKR-RegularTTF;
+}

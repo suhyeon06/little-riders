@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: ${MYSQL_URL}
+    username: ${MYSQL_USER}
+    password: ${MYSQL_PASSWORD}
+  jpa:
+    hibernate:
+      ddl-auto: none
+    show-sql: false
+    properties:
+      hibernate.format_sql: true
+  jwt:
+    access:
+      secret: ${ACCESS_SECRET}
+      expTime: ${ACCESS_EXP_TIME}
+    refresh:
+      secret: ${REFRESH_SECRET}
+      expTime: ${REFRESH_EXP_TIME}
+
+  data:
+    mongodb:
+      uri: ${MONGO_URI}
+
+    redis:
+      host: ${REDIS_URL}
+      port: ${REDIS_PORT}
+
+  mail:
+    host: ${MAIL_HOST}
+    port: ${MAIL_PORT}
+    from: ${MAIL_FROM}
+    username: ${MAIL_USERNAME}
+    password: ${MAIL_PASSWORD}
+
+
+  resource:
+    directory: /app/data
+
+

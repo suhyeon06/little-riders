@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="theme-color" content="#FFFFFF" />
+    <link
+      rel="alternate icon"
+      href="/public/icons/favicon.ico"
+      type="icon"
+      sizes="16x16"
+    />
+    <link
+      rel="apple-touch-icon"
+      href="/public/icons/apple-touch-icon.png"
+      sizes="180x180"
+    />
+    <link rel="manifest" href="/public/manifest.json" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="format-detection" content="telephone=no" />
+
+    <script src="qrc:///qtwebchannel/qwebchannel.js"></script>
+
+    <title>리틀라이더즈 학부모</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+
+    <script language="JavaScript">
+      new QWebChannel(qt.webChannelTransport, function (channel) {
+        // window.barcodeHandler = channel.objects.barcodeHandler;
+        window.mainHandler = channel.objects.mainHandler;
+        // console.error(window.handler)
+        // console.error("sibal")
+        // handler.test(function(retVal) {
+        //   // console.error as console.log message don't show up in the python console
+        //   console.error(JSON.stringify(retVal));
+        // })
+
+      });
+      </script>
+
+    <!-- pwa sw.js 정보 줄러오는 스크립트 추가 -->
+    <script>
+      if ('serviceWorker' in navigator) {
+        // Register a service worker hosted at the root of the
+        // site using the default scope.
+        navigator.serviceWorker
+          .register('/sw.js')
+          .then((registration) => {
+            console.log('Service worker registration succeeded:', registration)
+          })
+          .catch((err) => {
+            console.log('Service worker registration failed:', error)
+          })
+      } else {
+        console.log('Service workers are not supported.')
+      }
+    </script>
+  </body>
+</html>

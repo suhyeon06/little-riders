@@ -1,0 +1,35 @@
+server:
+  port: 8080
+  servlet:
+    context-path: /api
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
+
+spring:
+  servlet:
+    multipart:
+      max-file-size: 20MB
+      max-request-size: 30MB
+  mail:
+    host: littleriders.co.kr
+    port: 1025
+    from: admin@littleriders.co.kr
+
+
+  naver:
+    key: ${NAVER_KEY}
+    secret: ${NAVER_SECRET}
+
+  resource:
+    directory: .
+
+  sms:
+    key: ${SMS_KEY}
+    secret: ${SMS_SECRET}
+    sender: ${SMS_SENDER}
+    test: ${SMS_TEST}
+
+  jpa:
+    open-in-view: false

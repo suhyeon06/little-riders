@@ -1,0 +1,51 @@
+package kr.co.littleriders.backend.common.fixture;
+
+
+import kr.co.littleriders.backend.domain.academy.entity.Academy;
+import kr.co.littleriders.backend.domain.beacon.entity.Beacon;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
+@Getter
+public enum BeaconFixture {
+
+
+    A("AAAAAAAA-AAAA-AAAA-AAAA-AAAAAAAAAAAA"),
+    B("BBBBBBBB-BBBB-BBBB-BBBB-BBBBBBBBBBBB"),
+    C("CCCCCCCC-CCCC-CCCC-CCCC-CCCCCCCCCCCC"),
+    D("DDDDDDDD-DDDD-DDDD-DDDD-DDDDDDDDDDDD"),
+    E("EEEEEEEE-EEEE-EEEE-EEEE-EEEEEEEEEEEE"),
+    F("FFFFFFFF-FFFF-FFFF-FFFF-FFFFFFFFFFFF"),
+    G("GGGGGGGG-GGGG-GGGG-GGGG-GGGGGGGGGGGG"),
+    H("HHHHHHHH-HHHH-HHHH-HHHH-HHHHHHHHHHHH"),
+    I("IIIIIIII-IIII-IIII-IIII-IIIIIIIIIIII"),
+    J("JJJJJJJJ-JJJJ-JJJJ-JJJJ-JJJJJJJJJJJJ"),
+    K("KKKKKKKK-KKKK-KKKK-KKKK-KKKKKKKKKKKK"),
+    L("LLLLLLLL-LLLL-LLLL-LLLL-LLLLLLLLLLLL"),
+    M("MMMMMMMM-MMMM-MMMM-MMMM-MMMMMMMMMMMM"),
+    N("NNNNNNNN-NNNN-NNNN-NNNN-NNNNNNNNNNNN"),
+    O("OOOOOOOO-OOOO-OOOO-OOOO-OOOOOOOOOOOO"),
+    P("PPPPPPPP-PPPP-PPPP-PPPP-PPPPPPPPPPPP"),
+    Q("QQQQQQQQ-QQQQ-QQQQ-QQQQ-QQQQQQQQQQQQ"),
+    R("RRRRRRRR-RRRR-RRRR-RRRR-RRRRRRRRRRRR"),
+    S("SSSSSSSS-SSSS-SSSS-SSSS-SSSSSSSSSSSS"),
+    T("TTTTTTTT-TTTT-TTTT-TTTT-TTTTTTTTTTTT"),
+    U("UUUUUUUU-UUUU-UUUU-UUUU-UUUUUUUUUUUU"),
+    V("VVVVVVVV-VVVV-VVVV-VVVV-VVVVVVVVVVVV"),
+    W("WWWWWWWW-WWWW-WWWW-WWWW-WWWWWWWWWWWW"),
+    X("XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX"),
+    Y("YYYYYYYY-YYYY-YYYY-YYYY-YYYYYYYYYYYY"),
+    Z("ZZZZZZZZ-ZZZZ-ZZZZ-ZZZZ-ZZZZZZZZZZZZ");
+
+    private String uuid;
+
+
+    public Beacon toBeacon(Academy academy) {
+        return Beacon.of(uuid,academy);
+    }
+
+}
